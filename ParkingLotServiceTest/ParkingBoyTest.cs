@@ -86,5 +86,23 @@ namespace ParkingLotServiceTest
             Assert.Equal("License Number 01", result01.LicenseNumber);
             Assert.Equal("License Number 02", result02.LicenseNumber);
         }
+
+        [Fact]
+        public void Should_give_null_when_parking_boy_fetch_cars_given_used_ticket()
+        {
+            //given
+            var parkingBoy = new ParkingBoy("Parking Boy 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
+            parkingBoy.AssignLot(parkingLot);
+            var car = new Car("License NUmber");
+            var ticket = parkingBoy.ParkCar(car);
+            parkingBoy.FetchCar(ticket);
+
+            //when
+            var result = parkingBoy.FetchCar(ticket);
+
+            //then
+            Assert.Null(result);
+        }
     }
 }
