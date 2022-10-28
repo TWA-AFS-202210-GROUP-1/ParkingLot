@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+
 namespace ParkingLotService;
 
 public class ParkingBoy
@@ -20,8 +22,17 @@ public class ParkingBoy
 
     public void AssignLot(ParkingLot lot)
     {
-        _managingLot ??= lot;
+        if (_managingLot == null)
+        {
+            _managingLot = lot;
+            _managingLot.ParkingBoy = this;
+        }
     }
 
     public string Name { get; }
+
+    public Car FetchCar(Ticket ticket)
+    {
+        return _managingLot.PopCar(ticket.Car.LicenseNumber);
+    }
 }

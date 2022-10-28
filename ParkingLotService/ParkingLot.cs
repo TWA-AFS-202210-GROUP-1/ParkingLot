@@ -8,6 +8,8 @@ namespace ParkingLotService
         public List<Car> Cars { get; }
         public string Name { get; }
 
+        public ParkingBoy ParkingBoy { get; set; }
+
         public ParkingLot(string name)
         {
             Name = name;
