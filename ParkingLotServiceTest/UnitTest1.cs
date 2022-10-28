@@ -1,8 +1,8 @@
-namespace ParkingLotTest
-{
-    using ParkingLot;
-    using Xunit;
+using ParkingLotService;
+using Xunit;
 
+namespace ParkingLotServiceTest
+{
     public class UnitTest1
     {
         [Fact]
