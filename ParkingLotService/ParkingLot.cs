@@ -5,6 +5,9 @@ namespace ParkingLotService
 {
     public class ParkingLot
     {
+        private const int DefaultCapacity = 10;
+        private int _capacity = DefaultCapacity;
+        private int _carNumber = 0;
         public List<Car> Cars { get; }
         public string Name { get; }
 
@@ -18,8 +21,14 @@ namespace ParkingLotService
 
         public bool AddCar(Car car)
         {
-            Cars.Add(car);
-            return true;
+            if (IsLotFull())
+            {
+                Cars.Add(car);
+                _carNumber++;
+                return true;
+            }
+
+            return false;
         }
 
         public Car PopCar(string licenseNumber)
@@ -31,6 +40,16 @@ namespace ParkingLotService
             }
 
             return car;
+        }
+
+        private void SetCapacity(int capacity)
+        {
+            _capacity = capacity;
+        }
+
+        private bool IsLotFull()
+        {
+            return _carNumber < _capacity;
         }
     }
 }

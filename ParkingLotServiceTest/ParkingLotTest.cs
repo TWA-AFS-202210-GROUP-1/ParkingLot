@@ -49,5 +49,23 @@ namespace ParkingLotServiceTest
             //then
             Assert.Null(result);
         }
+
+        [Fact]
+        public void Should_return_false_when_add_car_given_a_full_parking_lot()
+        {
+            //given
+            var parkingLot = new ParkingLot("Parking Lot 01");
+            var car = new Car("License Number");
+            for (int i = 0; i < 10; i++)
+            {
+                parkingLot.AddCar(car);
+            }
+
+            //when
+            var result = parkingLot.AddCar(car);
+
+            //then
+            Assert.False(result);
+        }
     }
 }
