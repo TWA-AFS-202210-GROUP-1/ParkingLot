@@ -1,13 +1,14 @@
 namespace ParkingLotService;
 
-public class Response
+public class Response<T>
+    where T : class
 {
-    public Car Car { get; set; }
+    public T Content { get; set; }
     public string Message { get; set; }
 
-    public Response(Car car, string message)
+    public Response(T content, string message)
     {
-        Car = car;
+        Content = content;
         Message = message;
     }
 }
