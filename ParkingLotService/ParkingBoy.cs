@@ -10,30 +10,30 @@ namespace ParkingLotService;
 
 public class ParkingBoy
 {
-    private ParkingLot _managingLot;
+    private List<ParkingLot> _managingLots;
     private string _token;
     public string Name { get; }
     public ParkingBoy(string name)
     {
         Name = name;
         _token = Guid.NewGuid().ToString();
+        _managingLots = new List<ParkingLot>();
     }
 
     public void AssignLot(ParkingLot lot)
     {
-        if (_managingLot == null)
-        {
-            _managingLot = lot;
-            _managingLot.ParkingBoy = this;
-        }
+        _managingLots.Add(lot);
     }
 
     public Response<Ticket> ParkCar(Car car)
     {
-        if (_managingLot.AddCar(car))
+        foreach (var lot in _managingLots)
         {
-            var ticket = SignTicket(new Ticket(this, car));
-            return new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage);
+            if (lot.AddCar(car))
+            {
+                var ticket = SignTicket(new Ticket(this, car, lot));
+                return new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage);
+            }
         }
 
         return new Response<Ticket>(null, ParkingBoyConst.NoPositionMessage);
@@ -53,7 +53,9 @@ public class ParkingBoy
 
         if (IsValidTicket(ticket))
         {
-            var car = _managingLot.PopCar(ticket.Car.LicenseNumber);
+            var thisCarParkingLotName = ticket.ParkingLot.Name;
+            var lot = _managingLots.Find(lot => lot.Name.Equals(thisCarParkingLotName));
+            var car = lot?.PopCar(ticket.Car.LicenseNumber);
             if (car != null)
             {
                 return new Response<Car>(car, ParkingBoyConst.GetCarMessage);

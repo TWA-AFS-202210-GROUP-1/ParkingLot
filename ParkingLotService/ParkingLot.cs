@@ -7,7 +7,7 @@ namespace ParkingLotService
     {
         private const int DefaultCapacity = 10;
         private int _capacity = DefaultCapacity;
-        private int _carNumber = 0;
+        public int CarNumber { get; private set; } = 0;
         public List<Car> Cars { get; }
         public string Name { get; }
 
@@ -24,7 +24,7 @@ namespace ParkingLotService
             if (IsLotFull())
             {
                 Cars.Add(car);
-                _carNumber++;
+                CarNumber++;
                 return true;
             }
 
@@ -42,14 +42,9 @@ namespace ParkingLotService
             return car;
         }
 
-        private void SetCapacity(int capacity)
-        {
-            _capacity = capacity;
-        }
-
         private bool IsLotFull()
         {
-            return _carNumber < _capacity;
+            return CarNumber < _capacity;
         }
     }
 }

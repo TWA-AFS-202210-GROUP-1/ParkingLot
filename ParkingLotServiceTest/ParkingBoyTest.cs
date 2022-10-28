@@ -117,7 +117,7 @@ namespace ParkingLotServiceTest
             var car = new Car("License NUmber");
             parkingBoy.ParkCar(car);
 
-            var ticket = new Ticket(parkingBoy, car);
+            var ticket = new Ticket(parkingBoy, car, parkingLot);
 
             //when
             var response = parkingBoy.FetchCar(ticket);
@@ -154,6 +154,83 @@ namespace ParkingLotServiceTest
             parkingBoy.AssignLot(parkingLot);
             var car = new Car("License NUmber");
             for (int i = 0; i < 10; i++)
+            {
+                parkingBoy.ParkCar(car);
+            }
+
+            //when
+            var response = parkingBoy.ParkCar(car);
+
+            //then
+            Assert.Null(response.Content);
+            Assert.Equal(ParkingBoyConst.NoPositionMessage, response.Message);
+        }
+
+        [Fact]
+        public void Should_add_only_to_the_first_lot_when_add_car_given_two_lot_and_the_first_lot_is_not_full()
+        {
+            //given
+            var parkingBoy = new ParkingBoy("Parking Boy 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            parkingBoy.AssignLot(parkingLot01);
+            parkingBoy.AssignLot(parkingLot02);
+            var car = new Car("License NUmber");
+            for (int i = 0; i < 5; i++)
+            {
+                parkingBoy.ParkCar(car);
+            }
+
+            //when
+            var response = parkingBoy.ParkCar(car);
+
+            //then
+            Assert.NotNull(response.Content);
+            Assert.Equal(6, parkingLot01.CarNumber);
+            Assert.Equal(0, parkingLot02.CarNumber);
+        }
+
+        [Fact]
+        public void Should_add_to_both_when_add_cars_given_two_lot_and_the_first_lot_is_full()
+        {
+            //given
+            var parkingBoy = new ParkingBoy("Parking Boy 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            parkingBoy.AssignLot(parkingLot01);
+            parkingBoy.AssignLot(parkingLot02);
+            var cars = new List<Car>()
+            {
+                new Car("License Number 01"),
+                new Car("License Number 02"),
+                new Car("License Number 03"),
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                parkingBoy.ParkCars(cars);
+            }
+
+            //when
+            var response = parkingBoy.ParkCars(cars);
+
+            //then
+            Assert.Equal(3, response.Count);
+            Assert.Equal(10, parkingLot01.CarNumber);
+            Assert.Equal(2, parkingLot02.CarNumber);
+        }
+
+        [Fact]
+        public void Should_give_null_ticket_and_no_position_message_when_parking_boy_add_car_given_all_lot_full()
+        {
+            //given
+            var parkingBoy = new ParkingBoy("Parking Boy 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            parkingBoy.AssignLot(parkingLot01);
+            parkingBoy.AssignLot(parkingLot02);
+            var car = new Car("License Number 01");
+
+            for (int i = 0; i < 20; i++)
             {
                 parkingBoy.ParkCar(car);
             }
