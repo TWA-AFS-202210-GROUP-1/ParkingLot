@@ -45,6 +45,11 @@ public class ParkingBoy
 
     public Response FetchCar(Ticket ticket)
     {
+        if (ticket == null)
+        {
+            return new Response(null, "Please provide your parking ticket.");
+        }
+
         if (IsValidTicket(ticket))
         {
             return new Response(_managingLot.PopCar(ticket.Car.LicenseNumber), "Here is your Car.");
@@ -55,11 +60,6 @@ public class ParkingBoy
 
     private bool IsValidTicket(Ticket ticket)
     {
-        if (ticket == null)
-        {
-            return false;
-        }
-
         var expectTicketCode = GenerateMd5CodeForTicket(ticket.Car);
         return string.Equals(expectTicketCode, ticket.Code);
     }

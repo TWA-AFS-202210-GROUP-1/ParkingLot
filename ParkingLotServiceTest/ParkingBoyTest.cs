@@ -140,6 +140,7 @@ namespace ParkingLotServiceTest
 
             //then
             Assert.Null(result.Car);
+            Assert.Equal("Please provide your parking ticket.", result.Message);
         }
 
         [Fact]
