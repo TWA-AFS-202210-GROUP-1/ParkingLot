@@ -22,7 +22,7 @@ namespace ParkingLotTest
     }
 
     [Fact]
-    public void Should_return_same_car_when_fetch_parked_car_given_a_ticket()
+    public void Should_return_same_car_when_fetch_car_given_a_ticket()
     {
       // given
       var parkingLot = new ParkingLot();
@@ -50,6 +50,24 @@ namespace ParkingLotTest
       var tickets = parkingBoy.Park(cars);
       // then
       Assert.NotEmpty(tickets);
+    }
+
+    [Fact]
+    public void Should_return_right_car_when_fetch_car_given_corresponding_ticket()
+    {
+      // given
+      var parkingLot = new ParkingLot();
+      var parkingBoy = new ParkingBoy(parkingLot);
+      var cars = new List<Car>
+      {
+        new Car(),
+        new Car(),
+      };
+      // when
+      var tickets = parkingBoy.Park(cars);
+      var fetchedCars = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
+      // then
+      Assert.Equal(cars, fetchedCars);
     }
   }
 }
