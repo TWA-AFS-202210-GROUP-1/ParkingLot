@@ -1,6 +1,9 @@
+using System.Linq;
+
 namespace ParkingLotTest
 {
   using ParkingLot;
+  using System.Collections.Generic;
   using Xunit;
 
   public class ParkingBoyTest
@@ -13,7 +16,7 @@ namespace ParkingLotTest
       var parkingBoy = new ParkingBoy(parkingLot);
       var car = new Car();
       // when
-      var ticket = parkingBoy.ParkCar(car);
+      var ticket = parkingBoy.Park(car);
       // then
       Assert.NotNull(ticket);
     }
@@ -26,10 +29,27 @@ namespace ParkingLotTest
       var parkingBoy = new ParkingBoy(parkingLot);
       var car = new Car();
       // when
-      var ticket = parkingBoy.ParkCar(car);
+      var ticket = parkingBoy.Park(car);
       var fetchedCar = parkingBoy.FetchCar(ticket);
       // then
       Assert.Equal(car, fetchedCar);
+    }
+
+    [Fact]
+    public void Should_return_tickets_when_park_multiple_cars_given_car_list()
+    {
+      // given
+      var parkingLot = new ParkingLot();
+      var parkingBoy = new ParkingBoy(parkingLot);
+      var cars = new List<Car>
+      {
+        new Car(),
+        new Car(),
+      };
+      // when
+      var tickets = parkingBoy.Park(cars);
+      // then
+      Assert.NotEmpty(tickets);
     }
   }
 }
