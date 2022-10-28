@@ -37,8 +37,8 @@ namespace ParkingLotServiceTest
             var result = parkingBoy.FetchCar(ticket);
 
             //then
-            Assert.NotNull(result);
-            Assert.Equal("License Number", car.LicenseNumber);
+            Assert.NotNull(result.Car);
+            Assert.Equal("License Number", result.Car.LicenseNumber);
         }
 
         [Fact]
@@ -83,8 +83,8 @@ namespace ParkingLotServiceTest
             var result02 = parkingBoy.FetchCar(tickets[1]);
 
             //then
-            Assert.Equal("License Number 01", result01.LicenseNumber);
-            Assert.Equal("License Number 02", result02.LicenseNumber);
+            Assert.Equal("License Number 01", result01.Car.LicenseNumber);
+            Assert.Equal("License Number 02", result02.Car.LicenseNumber);
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace ParkingLotServiceTest
             var result = parkingBoy.FetchCar(ticket);
 
             //then
-            Assert.Null(result);
+            Assert.Null(result.Car);
         }
 
         [Fact]
@@ -121,7 +121,8 @@ namespace ParkingLotServiceTest
             var result = parkingBoy.FetchCar(ticket);
 
             //then
-            Assert.Null(result);
+            Assert.Null(result.Car);
+            Assert.Equal("Unrecognized parking ticket.", result.Message);
         }
 
         [Fact]
@@ -138,7 +139,7 @@ namespace ParkingLotServiceTest
             var result = parkingBoy.FetchCar(null);
 
             //then
-            Assert.Null(result);
+            Assert.Null(result.Car);
         }
 
         [Fact]

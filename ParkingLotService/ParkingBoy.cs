@@ -43,14 +43,14 @@ public class ParkingBoy
 
     public string Name { get; }
 
-    public Car FetchCar(Ticket ticket)
+    public Response FetchCar(Ticket ticket)
     {
         if (IsValidTicket(ticket))
         {
-            return _managingLot.PopCar(ticket.Car.LicenseNumber);
+            return new Response(_managingLot.PopCar(ticket.Car.LicenseNumber), "Here is your Car.");
         }
 
-        return null;
+        return new Response(null, "Unrecognized parking ticket.");
     }
 
     private bool IsValidTicket(Ticket ticket)
