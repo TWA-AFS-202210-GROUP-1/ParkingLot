@@ -1,6 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3f8800bb_002D43b1_002D4dfc_002Dafd2_002D076eea97e739/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_give_null_when_parking_boy_fetch_cars_given_null_ticket" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::A8ADF2B5-445D-4A86-8DBF-0350586E4EFC::net6.0::ParkingLotServiceTest.ParkingBoyTest.Should_give_null_when_parking_boy_fetch_cars_given_null_ticket&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::A8ADF2B5-445D-4A86-8DBF-0350586E4EFC::net6.0::ParkingLotServiceTest.ParkingBoyTest.CleverParkingBoyTest.Should_add_car_to_more_position_lot_first_when_clever_parking_boy_park_car_when_park_multiple_car_and_car_number_larger_than_empty_position_number&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -38,7 +38,7 @@ public class ParkingBoy
         return new Response<Ticket>(null, ParkingBoyConst.NoPositionMessage);
     }
 
-    public List<Response<Ticket>> ParkCars(List<Car> cars)
+    public virtual List<Response<Ticket>> ParkCars(List<Car> cars)
     {
         return cars.Select(ParkCar).ToList();
     }
