@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace ParkingLotService;
@@ -18,6 +20,11 @@ public class ParkingBoy
         }
 
         return null;
+    }
+
+    public List<Ticket> ParkCars(List<Car> cars)
+    {
+        return cars.Select(ParkCar).ToList();
     }
 
     public void AssignLot(ParkingLot lot)
