@@ -1,33 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using ParkingLotService.Const;
 
-namespace ParkingLotService;
+namespace ParkingLotService.ParkingBoys;
 
 public class ParkingBoy
 {
-    private List<ParkingLot> _managingLots;
-    private string _token;
     public string Name { get; }
+    protected List<ParkingLot> ManagingLots { get; set; }
+    protected string Token { get; set; }
     public ParkingBoy(string name)
     {
         Name = name;
-        _token = Guid.NewGuid().ToString();
-        _managingLots = new List<ParkingLot>();
+        Token = Guid.NewGuid().ToString();
+        ManagingLots = new List<ParkingLot>();
     }
 
     public void AssignLot(ParkingLot lot)
     {
-        _managingLots.Add(lot);
+        ManagingLots.Add(lot);
     }
 
-    public Response<Ticket> ParkCar(Car car)
+    public virtual Response<Ticket> ParkCar(Car car)
     {
-        foreach (var lot in _managingLots)
+        foreach (var lot in ManagingLots)
         {
             if (lot.AddCar(car))
             {
@@ -54,7 +53,7 @@ public class ParkingBoy
         if (IsValidTicket(ticket))
         {
             var thisCarParkingLotName = ticket.ParkingLot.Name;
-            var lot = _managingLots.Find(lot => lot.Name.Equals(thisCarParkingLotName));
+            var lot = ManagingLots.Find(lot => lot.Name.Equals(thisCarParkingLotName));
             var car = lot?.PopCar(ticket.Car.LicenseNumber);
             if (car != null)
             {
@@ -65,16 +64,16 @@ public class ParkingBoy
         return new Response<Car>(null, ParkingBoyConst.WrongTicketMessage);
     }
 
+    protected Ticket SignTicket(Ticket ticket)
+    {
+        ticket.Code = GenerateMd5CodeForTicket(ticket.Car);
+        return ticket;
+    }
+
     private bool IsValidTicket(Ticket ticket)
     {
         var expectTicketCode = GenerateMd5CodeForTicket(ticket.Car);
         return string.Equals(expectTicketCode, ticket.Code);
-    }
-
-    private Ticket SignTicket(Ticket ticket)
-    {
-        ticket.Code = GenerateMd5CodeForTicket(ticket.Car);
-        return ticket;
     }
 
     private string GenerateMd5CodeForTicket(Car car)
@@ -82,7 +81,7 @@ public class ParkingBoy
         // Use input string to calculate MD5 hash
         using (var md5 = MD5.Create())
         {
-            byte[] inputBytes = Encoding.ASCII.GetBytes(Name + car.LicenseNumber + _token);
+            byte[] inputBytes = Encoding.ASCII.GetBytes(Name + car.LicenseNumber + Token);
             var hashBytes = md5.ComputeHash(inputBytes);
 
             return Convert.ToHexString(hashBytes);

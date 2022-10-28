@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using ParkingLotService;
 using ParkingLotService.Const;
+using ParkingLotService.ParkingBoys;
 using Xunit;
 
-namespace ParkingLotServiceTest
+namespace ParkingLotServiceTest.ParkingBoyTest
 {
     public class ParkingBoyTest
     {

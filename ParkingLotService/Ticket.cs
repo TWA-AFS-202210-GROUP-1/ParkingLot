@@ -1,3 +1,5 @@
+using ParkingLotService.ParkingBoys;
+
 namespace ParkingLotService;
 
 public class Ticket

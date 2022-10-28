@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
+using ParkingLotService.Const;
+using ParkingLotService.ParkingBoys;
 
 namespace ParkingLotService
 {
     public class ParkingLot
     {
-        private const int DefaultCapacity = 10;
-        private int _capacity = DefaultCapacity;
+        public int MaxCapacity { get; private set; } = ParkingLotConst.DefaultCapacity;
         public int CarNumber { get; private set; } = 0;
         public List<Car> Cars { get; }
         public string Name { get; }
-
-        public ParkingBoy ParkingBoy { get; set; }
 
         public ParkingLot(string name)
         {
@@ -42,9 +41,14 @@ namespace ParkingLotService
             return car;
         }
 
+        public void SeMaxCapacity(int max)
+        {
+            MaxCapacity = max;
+        }
+
         private bool IsLotFull()
         {
-            return CarNumber < _capacity;
+            return CarNumber < MaxCapacity;
         }
     }
 }
