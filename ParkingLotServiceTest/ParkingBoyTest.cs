@@ -23,7 +23,7 @@ namespace ParkingLotServiceTest
         }
 
         [Fact]
-        public void Should_give_a_car_when_parking_boy_parking_given_a_ticket()
+        public void Should_give_a_car_when_parking_boy_fetch_car_given_a_ticket()
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
@@ -42,7 +42,7 @@ namespace ParkingLotServiceTest
         }
 
         [Fact]
-        public void Should_give_several_car_when_parking_boy_parking_given_several_car()
+        public void Should_give_several_tickets_when_parking_boy_parking_given_several_car()
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
@@ -61,6 +61,30 @@ namespace ParkingLotServiceTest
             Assert.Equal(2, result.Count);
             Assert.Equal("License Number 01", result[0].Car.LicenseNumber);
             Assert.Equal("License Number 02", result[1].Car.LicenseNumber);
+        }
+
+        [Fact]
+        public void Should_give_correspond_car_when_parking_boy_fetch_cars_given_ticket()
+        {
+            //given
+            var parkingBoy = new ParkingBoy("Parking Boy 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
+            parkingBoy.AssignLot(parkingLot);
+            var cars = new List<Car>()
+            {
+                new Car("License Number 01"),
+                new Car("License Number 02"),
+            };
+
+            var tickets = parkingBoy.ParkCars(cars);
+            //when
+
+            var result01 = parkingBoy.FetchCar(tickets[0]);
+            var result02 = parkingBoy.FetchCar(tickets[1]);
+
+            //then
+            Assert.Equal("License Number 01", result01.LicenseNumber);
+            Assert.Equal("License Number 02", result02.LicenseNumber);
         }
     }
 }
