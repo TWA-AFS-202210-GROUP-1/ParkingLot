@@ -2,11 +2,11 @@
 {
   public class Ticket
   {
-    private readonly Car car;
-
     public Ticket(Car car)
     {
-      this.car = car;
+      Car = car;
     }
+
+    public Car Car { get; private set; }
   }
 }

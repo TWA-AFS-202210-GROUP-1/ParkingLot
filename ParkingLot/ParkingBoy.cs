@@ -1,4 +1,6 @@
-﻿namespace ParkingLot
+﻿using System;
+
+namespace ParkingLot
 {
   public class ParkingBoy
   {
@@ -9,9 +11,16 @@
       this.parkingLot = parkingLot;
     }
 
-    public Ticket Park(Car car)
+    public Ticket ParkCar(Car car)
     {
+      parkingLot.AddCar(car);
+
       return new Ticket(car);
+    }
+
+    public Car FetchCar(Ticket ticket)
+    {
+      return ticket.Car;
     }
   }
 }
