@@ -36,6 +36,11 @@ namespace ParkingLot
             return null;
         }
 
+        public string FetchCar()
+        {
+            return null;
+        }
+
         public List<Ticket> ParkManyCars(List<Car> carList)
         {
             var ticketList = new List<Ticket>();
@@ -58,5 +63,6 @@ namespace ParkingLot
 
             return licensePlateList;
         }
+
     }
 }

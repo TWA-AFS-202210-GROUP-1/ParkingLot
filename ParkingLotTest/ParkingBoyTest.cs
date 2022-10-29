@@ -72,5 +72,30 @@ namespace ParkingLotTest
             Assert.Equal("LicensePlate2", licensePlateList[1]);
             Assert.Equal(2, licensePlateList.Count);
         }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_wrong_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var ticket = new Ticket("InvalidLicensePlate", "Invalid");
+            parkingBoy.ParkCar(new Car("LicensePlate"));
+            // when
+            var licensePlate = parkingBoy.FetchCar(ticket);
+            // then
+            Assert.Null(licensePlate);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_null_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ParkCar(new Car("LicensePlate"));
+            // when
+            var licensePlate = parkingBoy.FetchCar();
+            // then
+            Assert.Null(licensePlate);
+        }
     }
 }

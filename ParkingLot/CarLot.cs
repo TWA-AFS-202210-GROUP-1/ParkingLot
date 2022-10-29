@@ -9,13 +9,14 @@ namespace ParkingLot
     public class CarLot
     {
         private string lotID;
-        public List<Car> CarList { get; }
 
         public CarLot(string lotID)
         {
             this.lotID = lotID;
-            CarList = new List<Car>();
+            this.CarList = new List<Car>();
         }
+
+        public List<Car> CarList { get; }
 
         public bool AddCar(Car car)
         {
