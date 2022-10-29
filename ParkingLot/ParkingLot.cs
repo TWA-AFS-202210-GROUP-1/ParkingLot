@@ -28,7 +28,7 @@ namespace ParkingLot
       if (HasCar(car) && car != null)
       {
         ParkedCars.Remove(car);
-        EmptySlots--;
+        EmptySlots++;
       }
     }
 

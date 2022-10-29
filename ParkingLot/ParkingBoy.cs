@@ -13,9 +13,10 @@ namespace ParkingLot
 
     public Ticket Park(Car car)
     {
+      var parkingTicket = parkingLot.EmptySlots > 0 ? new Ticket(car) : null;
       parkingLot.AddCar(car);
 
-      return parkingLot.EmptySlots > 0 ? new Ticket(car) : null;
+      return parkingTicket;
     }
 
     public List<Ticket> Park(List<Car> cars)

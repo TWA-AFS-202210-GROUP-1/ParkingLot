@@ -16,7 +16,6 @@ namespace ParkingLotTest
       var ticket = parkingBoy.Park(new Car("Blue Sedan"));
       // then
       Assert.IsType<Ticket>(ticket);
-      Assert.NotNull(ticket);
     }
 
     [Fact]
@@ -46,7 +45,7 @@ namespace ParkingLotTest
       var tickets = parkingBoy.Park(cars);
       // then
       Assert.IsType<List<Ticket>>(tickets);
-      Assert.NotNull(tickets);
+      Assert.NotEmpty(tickets);
     }
 
     [Fact]
@@ -113,6 +112,22 @@ namespace ParkingLotTest
       var ticket = parkingBoy.Park(new Car("White SUV"));
       // then
       Assert.Null(ticket);
+    }
+
+    [Fact]
+    public void Should_return_ticket_when_park_given_a_car_and_available_parking_lot()
+    {
+      // given
+      var parkingLot = new ParkingLot(2);
+      var parkingBoy = new ParkingBoy(parkingLot);
+      parkingBoy.Park(new Car("Blue Sedan"));
+      var blackJeepTicket = parkingBoy.Park(new Car("Black Jeep"));
+      parkingBoy.FetchCar(blackJeepTicket);
+      // when
+      var newTicket = parkingBoy.Park(new Car("White SUV"));
+      // then
+      Assert.IsType<Ticket>(newTicket);
+      Assert.Equal(0, parkingLot.EmptySlots);
     }
   }
 }
