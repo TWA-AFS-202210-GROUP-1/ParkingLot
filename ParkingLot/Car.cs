@@ -8,5 +8,10 @@
         {
             this.licensePlate = licensePlate;
         }
+
+        public string LicensePlate
+        {
+            get { return licensePlate; }
+        }
     }
 }
