@@ -1,17 +1,18 @@
+using System;
 using ParkingLotService.ParkingBoys;
 
 namespace ParkingLotService;
 
 public class Ticket
 {
-    public Car Car { get; set; }
+    public string CarLicenseNumber { get; set; }
     public string Code { get; set; }
-    public ParkingLot ParkingLot { get; set; }
+    public string ParkingLotName { get; set; }
 
-    public Ticket(ParkingBoy parkingBoy, Car car, ParkingLot parkingLot)
+    public Ticket(string carLicenseNumber, string parkingLotName)
     {
-        Car = car;
-        Code = parkingBoy.Name;
-        ParkingLot = parkingLot;
+        CarLicenseNumber = carLicenseNumber;
+        ParkingLotName = parkingLotName;
+        Code = "Invalid Code";
     }
 }

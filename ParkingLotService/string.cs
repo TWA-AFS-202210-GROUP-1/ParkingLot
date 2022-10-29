@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace ParkingLotService
 {
-    public class ParkingLot
+    public class @string
     {
         public int MaxCapacity { get; private set; } = ParkingLotConst.DefaultCapacity;
         public int CarNumber { get; private set; } = 0;
         public List<Car> Cars { get; }
         public string Name { get; }
 
-        public ParkingLot(string name)
+        public @string(string name)
         {
             Name = name;
             Cars = new List<Car>();

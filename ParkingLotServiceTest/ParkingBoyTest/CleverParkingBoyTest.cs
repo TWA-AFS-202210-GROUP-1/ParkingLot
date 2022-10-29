@@ -13,9 +13,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
             parkingLot01.SeMaxCapacity(5);
-            var parkingLot02 = new ParkingLot("Parking Lot 02");
+            var parkingLot02 = new @string("Parking Lot 02");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var car = new Car("License NUmber");
@@ -34,9 +34,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
             parkingLot01.SeMaxCapacity(5);
-            var parkingLot02 = new ParkingLot("Parking Lot 02");
+            var parkingLot02 = new @string("Parking Lot 02");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var cars = new List<Car>()
@@ -63,9 +63,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
             parkingLot01.SeMaxCapacity(2);
-            var parkingLot02 = new ParkingLot("Parking Lot 02");
+            var parkingLot02 = new @string("Parking Lot 02");
             parkingLot02.SeMaxCapacity(4);
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
@@ -92,9 +92,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
             parkingLot01.SeMaxCapacity(2);
-            var parkingLot02 = new ParkingLot("Parking Lot 02");
+            var parkingLot02 = new @string("Parking Lot 02");
             parkingLot02.SeMaxCapacity(4);
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);

@@ -9,16 +9,16 @@ namespace ParkingLotService.ParkingBoys;
 public class ParkingBoy
 {
     public string Name { get; }
-    protected List<ParkingLot> ManagingLots { get; set; }
-    protected string Token { get; set; }
+    protected List<@string> ManagingLots { get; set; }
+    private readonly string _token;
     public ParkingBoy(string name)
     {
         Name = name;
-        Token = Guid.NewGuid().ToString();
-        ManagingLots = new List<ParkingLot>();
+        _token = Guid.NewGuid().ToString();
+        ManagingLots = new List<@string>();
     }
 
-    public void AssignLot(ParkingLot lot)
+    public void AssignLot(@string lot)
     {
         ManagingLots.Add(lot);
     }
@@ -29,7 +29,7 @@ public class ParkingBoy
         {
             if (lot.AddCar(car))
             {
-                var ticket = SignTicket(new Ticket(this, car, lot));
+                var ticket = SignTicket(new Ticket(car.LicenseNumber, lot.Name));
                 return new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage);
             }
         }
@@ -46,7 +46,7 @@ public class ParkingBoy
             {
                 if (lot.AddCar(cars[tickets.Count]))
                 {
-                    var ticket = SignTicket(new Ticket(this, cars[tickets.Count], lot));
+                    var ticket = SignTicket(new Ticket(cars[tickets.Count].LicenseNumber, lot.Name));
                     tickets.Add(new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage));
                 }
             }
@@ -66,9 +66,9 @@ public class ParkingBoy
 
         if (IsValidTicket(ticket))
         {
-            var thisCarParkingLotName = ticket.ParkingLot.Name;
+            var thisCarParkingLotName = ticket.ParkingLotName;
             var lot = ManagingLots.Find(lot => lot.Name.Equals(thisCarParkingLotName));
-            var car = lot?.PopCar(ticket.Car.LicenseNumber);
+            var car = lot?.PopCar(ticket.CarLicenseNumber);
 
             if (car != null)
             {
@@ -81,21 +81,21 @@ public class ParkingBoy
 
     protected Ticket SignTicket(Ticket ticket)
     {
-        ticket.Code = GenerateMd5CodeForTicket(ticket.Car);
+        ticket.Code = GenerateMd5CodeForTicket(ticket.CarLicenseNumber);
         return ticket;
     }
 
     private bool IsValidTicket(Ticket ticket)
     {
-        var expectTicketCode = GenerateMd5CodeForTicket(ticket.Car);
+        var expectTicketCode = GenerateMd5CodeForTicket(ticket.CarLicenseNumber);
         return string.Equals(expectTicketCode, ticket.Code);
     }
 
-    private string GenerateMd5CodeForTicket(Car car)
+    private string GenerateMd5CodeForTicket(string carLicenseNumber)
     {
         using (var md5 = MD5.Create())
         {
-            byte[] inputBytes = Encoding.ASCII.GetBytes(Name + car.LicenseNumber + Token);
+            byte[] inputBytes = Encoding.ASCII.GetBytes(Name + carLicenseNumber + _token);
             var hashBytes = md5.ComputeHash(inputBytes);
 
             return Convert.ToHexString(hashBytes);

@@ -13,7 +13,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             var car = new Car("License Number");
             parkingBoy.AssignLot(parkingLot);
             //when
@@ -29,7 +29,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             var car = new Car("License Number");
             parkingBoy.AssignLot(parkingLot);
 
@@ -48,7 +48,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var cars = new List<Car>()
             {
@@ -61,8 +61,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
 
             //then
             Assert.Equal(2, responses.Count);
-            Assert.Equal("License Number 01", responses[0].Content.Car.LicenseNumber);
-            Assert.Equal("License Number 02", responses[1].Content.Car.LicenseNumber);
+            Assert.Equal("License Number 01", responses[0].Content.CarLicenseNumber);
+            Assert.Equal("License Number 02", responses[1].Content.CarLicenseNumber);
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var cars = new List<Car>()
             {
@@ -94,7 +94,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var car = new Car("License NUmber");
             var ticket = parkingBoy.ParkCar(car);
@@ -113,12 +113,12 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var car = new Car("License NUmber");
             parkingBoy.ParkCar(car);
 
-            var ticket = new Ticket(parkingBoy, car, parkingLot);
+            var ticket = new Ticket(car.LicenseNumber, parkingLot.Name);
 
             //when
             var response = parkingBoy.FetchCar(ticket);
@@ -133,7 +133,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var car = new Car("License NUmber");
             parkingBoy.ParkCar(car);
@@ -151,7 +151,7 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot = new ParkingLot("Parking Lot 01");
+            var parkingLot = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot);
             var car = new Car("License NUmber");
             for (int i = 0; i < 10; i++)
@@ -172,8 +172,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
-            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot02 = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var car = new Car("License NUmber");
@@ -196,8 +196,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
-            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot02 = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var cars = new List<Car>()
@@ -225,8 +225,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new ParkingBoy("Parking Boy 01");
-            var parkingLot01 = new ParkingLot("Parking Lot 01");
-            var parkingLot02 = new ParkingLot("Parking Lot 01");
+            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot02 = new @string("Parking Lot 01");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var car = new Car("License Number 01");
