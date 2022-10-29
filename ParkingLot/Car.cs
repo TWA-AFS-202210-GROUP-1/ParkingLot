@@ -2,16 +2,10 @@
 {
     public class Car
     {
-        private string licensePlate;
-
+        public string LicensePlate { get; set; }
         public Car(string licensePlate)
         {
-            this.licensePlate = licensePlate;
-        }
-
-        public string LicensePlate
-        {
-            get { return licensePlate; }
+            this.LicensePlate = licensePlate;
         }
     }
 }

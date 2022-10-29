@@ -23,9 +23,9 @@ namespace ParkingLot
             return null;
         }
 
-        public string FetchCar(Ticket ticket)
+        public Car FetchCar(Ticket ticket)
         {
-            if (ticket == null)
+            if (ticket == null || ticket.Used)
             {
                 return null;
             }
@@ -35,7 +35,8 @@ namespace ParkingLot
 
             if (deleteCar != null)
             {
-                return licensePlate;
+                ticket.Used = true;
+                return deleteCar;
             }
 
             return null;
@@ -53,15 +54,15 @@ namespace ParkingLot
             return ticketList;
         }
 
-        public List<string> FetchManyCars(List<Ticket> ticketList)
+        public List<Car> FetchManyCars(List<Ticket> ticketList)
         {
-            var licensePlateList = new List<string>();
+            var carList = new List<Car>();
             foreach (var ticket in ticketList)
             {
-                licensePlateList.Add(FetchCar(ticket));
+                carList.Add(FetchCar(ticket));
             }
 
-            return licensePlateList;
+            return carList;
         }
     }
 }

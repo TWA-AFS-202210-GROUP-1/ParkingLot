@@ -2,17 +2,15 @@
 {
     public class Ticket
     {
-        private string licensePlate;
-        private string lotID;
-        public Ticket(string licensePlate, string lotID)
-        {
-            this.licensePlate = licensePlate;
-            this.lotID = lotID;
-        }
+        private string lotId;
+        public string LicensePlate { get; set; }
+        public bool Used { get; set; }
 
-        public string LicensePlate
+        public Ticket(string licensePlate, string lotId)
         {
-            get { return licensePlate; }
+            this.LicensePlate = licensePlate;
+            this.lotId = lotId;
+            this.Used = false;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Compression;
 
 namespace ParkingLotTest
 {
@@ -31,9 +32,9 @@ namespace ParkingLotTest
             var car = new Car("ThisIsLicensePlate");
             var ticket = parkingBoy.ParkCar(car);
             // when
-            var licensePlate = parkingBoy.FetchCar(ticket);
+            var fetchedCar = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Equal("ThisIsLicensePlate", licensePlate);
+            Assert.Equal(fetchedCar, car);
         }
 
         [Fact]
@@ -66,11 +67,9 @@ namespace ParkingLotTest
             };
             var ticketList = parkingBoy.ParkManyCars(carList);
             // when
-            var licensePlateList = parkingBoy.FetchManyCars(ticketList);
+            var fetchedCars = parkingBoy.FetchManyCars(ticketList);
             // then
-            Assert.Equal("LicensePlate1", licensePlateList[0]);
-            Assert.Equal("LicensePlate2", licensePlateList[1]);
-            Assert.Equal(2, licensePlateList.Count);
+            Assert.Equal(carList, fetchedCars);
         }
 
         [Fact]
@@ -81,9 +80,9 @@ namespace ParkingLotTest
             var ticket = new Ticket("InvalidLicensePlate", "Invalid");
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
-            var licensePlate = parkingBoy.FetchCar(ticket);
+            var car = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Null(licensePlate);
+            Assert.Null(car);
         }
 
         [Fact]
@@ -93,9 +92,23 @@ namespace ParkingLotTest
             var parkingBoy = new ParkingBoy();
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
-            var licensePlate = parkingBoy.FetchCar(null);
+            var car = parkingBoy.FetchCar(null);
             // then
-            Assert.Null(licensePlate);
+            Assert.Null(car);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_used_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var ticket = parkingBoy.ParkCar(new Car("LicensePlate"));
+            parkingBoy.FetchCar(ticket);
+            // when
+            var fetchedCar = parkingBoy.FetchCar(ticket);
+            // then
+            Assert.Null(fetchedCar);
+            Assert.True(ticket.Used);
         }
     }
 }
