@@ -20,11 +20,15 @@ namespace ParkingLot
       {
         ParkedCars.Add(car);
         EmptySlots--;
-        return OperationStatus.Successful;
+        return OperationStatus.ParkingSuccessful;
+      }
+      else if (EmptySlots == 0)
+      {
+        return OperationStatus.NoVacancy;
       }
       else
       {
-        return OperationStatus.Failed;
+        return OperationStatus.ParkingFailed;
       }
     }
 
@@ -34,11 +38,11 @@ namespace ParkingLot
       {
         ParkedCars.Remove(car);
         EmptySlots++;
-        return OperationStatus.Successful;
+        return OperationStatus.RemovingSuccessful;
       }
       else
       {
-        return OperationStatus.Failed;
+        return OperationStatus.RemovingFailed;
       }
     }
 

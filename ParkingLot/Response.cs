@@ -4,14 +4,16 @@
   {
     private readonly Car car;
     private readonly Ticket ticket;
+    private readonly OperationStatus operationStatus;
     private readonly bool isNullTicket;
     private readonly bool isValidTicket;
     private string errorMessage = string.Empty;
 
-    public Response(Car car, Ticket ticket)
+    public Response(Car car, Ticket ticket, OperationStatus operationStatus)
     {
       this.car = car;
       this.ticket = ticket;
+      this.operationStatus = operationStatus;
       isNullTicket = ticket == null;
       isValidTicket = ticket != null && car != null;
     }
@@ -28,7 +30,11 @@
 
     public string ShowErrorMessage()
     {
-      if (isNullTicket)
+      if (operationStatus == OperationStatus.NoVacancy)
+      {
+        errorMessage = "Not enough position.";
+      }
+      else if (isNullTicket)
       {
         errorMessage = "Please provide your parking ticket.";
       }

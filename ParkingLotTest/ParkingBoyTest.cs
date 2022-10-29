@@ -13,9 +13,9 @@ namespace ParkingLotTest
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
       // when
-      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
+      var response = parkingBoy.Park(new Car("Blue Sedan"));
       // then
-      Assert.IsType<Ticket>(ticket);
+      Assert.IsType<Ticket>(response.ShowTicket());
     }
 
     [Fact]
@@ -24,11 +24,11 @@ namespace ParkingLotTest
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
       var car = new Car("Blue Sedan");
-      var ticket = parkingBoy.Park(car);
+      var parkingResponse = parkingBoy.Park(car);
       // when
-      var response = parkingBoy.FetchCar(ticket);
+      var fetchingResponse = parkingBoy.FetchCar(parkingResponse.ShowTicket());
       // then
-      Assert.Equal(car, response.ShowCar());
+      Assert.Equal(car, fetchingResponse.ShowCar());
     }
 
     [Fact]
@@ -94,12 +94,13 @@ namespace ParkingLotTest
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
-      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
+      var parkingResponse = parkingBoy.Park(new Car("Blue Sedan"));
+      var ticket = parkingResponse.ShowTicket();
       parkingBoy.FetchCar(ticket);
       // when
-      var response = parkingBoy.FetchCar(ticket);
+      var fetchingResponse = parkingBoy.FetchCar(ticket);
       // then
-      Assert.Null(response.ShowCar());
+      Assert.Null(fetchingResponse.ShowCar());
     }
 
     [Fact]
@@ -110,9 +111,9 @@ namespace ParkingLotTest
       parkingBoy.Park(new Car("Blue Sedan"));
       parkingBoy.Park(new Car("Black Jeep"));
       // when
-      var ticket = parkingBoy.Park(new Car("White SUV"));
+      var response = parkingBoy.Park(new Car("White SUV"));
       // then
-      Assert.Null(ticket);
+      Assert.Null(response.ShowTicket());
     }
 
     [Fact]
@@ -122,12 +123,12 @@ namespace ParkingLotTest
       var parkingLot = new ParkingLot(2);
       var parkingBoy = new ParkingBoy(parkingLot);
       parkingBoy.Park(new Car("Blue Sedan"));
-      var blackJeepTicket = parkingBoy.Park(new Car("Black Jeep"));
-      parkingBoy.FetchCar(blackJeepTicket);
+      var response = parkingBoy.Park(new Car("Black Jeep"));
+      parkingBoy.FetchCar(response.ShowTicket());
       // when
-      var newTicket = parkingBoy.Park(new Car("White SUV"));
+      var newResponse = parkingBoy.Park(new Car("White SUV"));
       // then
-      Assert.IsType<Ticket>(newTicket);
+      Assert.IsType<Ticket>(newResponse.ShowTicket());
       Assert.Equal(0, parkingLot.EmptySlots);
     }
 
@@ -157,9 +158,9 @@ namespace ParkingLotTest
       var car = new Car("Blue Sedan");
       parkingBoy.Park(car);
       // when
-      var ticket = parkingBoy.Park(car);
+      var response = parkingBoy.Park(car);
       // then
-      Assert.Null(ticket);
+      Assert.Null(response.ShowTicket());
     }
 
     [Fact]
@@ -169,9 +170,9 @@ namespace ParkingLotTest
       var parkingBoy = new ParkingBoy(new ParkingLot());
       Car car = null;
       // when
-      var ticket = parkingBoy.Park(car);
+      var response = parkingBoy.Park(car);
       // then
-      Assert.Null(ticket);
+      Assert.Null(response.ShowTicket());
     }
 
     [Fact]
@@ -191,12 +192,13 @@ namespace ParkingLotTest
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
-      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
+      var parkingResponse = parkingBoy.Park(new Car("Blue Sedan"));
+      var ticket = parkingResponse.ShowTicket();
       parkingBoy.FetchCar(ticket);
       // when
-      var response = parkingBoy.FetchCar(ticket);
+      var fetchingResponse = parkingBoy.FetchCar(ticket);
       // then
-      Assert.Equal("Unrecognized parking ticket.", response.ShowErrorMessage());
+      Assert.Equal("Unrecognized parking ticket.", fetchingResponse.ShowErrorMessage());
     }
 
     [Fact]
@@ -208,6 +210,19 @@ namespace ParkingLotTest
       var response = parkingBoy.FetchCar(null);
       // then
       Assert.Equal("Please provide your parking ticket.", response.ShowErrorMessage());
+    }
+
+    [Fact]
+    public void Should_return_no_position_message_when_park_given_car_and_filled_parking_lot()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot(2));
+      parkingBoy.Park(new Car("Blue Sedan"));
+      parkingBoy.Park(new Car("Black Jeep"));
+      // when
+      var response = parkingBoy.Park(new Car("White SUV"));
+      // then
+      Assert.Equal("Not enough position.", response.ShowErrorMessage());
     }
   }
 }

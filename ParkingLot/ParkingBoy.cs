@@ -11,12 +11,12 @@ namespace ParkingLot
       this.parkingLot = parkingLot;
     }
 
-    public Ticket Park(Car car)
+    public Response Park(Car car)
     {
-      var operationStatus = parkingLot.AddCar(car);
-      var parkingTicket = operationStatus == OperationStatus.Successful ? new Ticket(car) : null;
+      var parkingStatus = parkingLot.AddCar(car);
+      var parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car) : null;
 
-      return parkingTicket;
+      return new Response(car, parkingTicket, parkingStatus);
     }
 
     public List<Ticket> Park(List<Car> cars)
@@ -25,7 +25,7 @@ namespace ParkingLot
       foreach (var car in cars)
       {
         var operationStatus = parkingLot.AddCar(car);
-        if (operationStatus == OperationStatus.Successful)
+        if (operationStatus == OperationStatus.ParkingSuccessful)
         {
           tickets.Add(new Ticket(car));
         }
@@ -37,8 +37,8 @@ namespace ParkingLot
     public Response FetchCar(Ticket ticket)
     {
       var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
-      var response = new Response(fetchedCar, ticket);
-      parkingLot.RemoveCar(fetchedCar);
+      var fetchingStatus = parkingLot.RemoveCar(fetchedCar);
+      var response = new Response(fetchedCar, ticket, fetchingStatus);
 
       return response;
     }

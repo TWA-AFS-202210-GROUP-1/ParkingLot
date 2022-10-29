@@ -3,13 +3,28 @@
   public enum OperationStatus
   {
     /// <summary>
-    /// The operation is successful
+    /// Parking is successful
     /// </summary>
-    Successful,
+    ParkingSuccessful,
 
     /// <summary>
-    /// The operation has failed
+    /// Parking has failed because car is null or already exists in the parking lot
     /// </summary>
-    Failed,
+    ParkingFailed,
+
+    /// <summary>
+    /// Parking has failed because the parking lot has no empty slot left
+    /// </summary>
+    NoVacancy,
+
+    /// <summary>
+    /// Successfully removed the car from the pariking lot
+    /// </summary>
+    RemovingSuccessful,
+
+    /// <summary>
+    /// Removing car has failed because car is null or does not exist in the parking lot
+    /// </summary>
+    RemovingFailed,
   }
 }
