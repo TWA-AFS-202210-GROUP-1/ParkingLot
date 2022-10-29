@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ParkingLot
 {
@@ -43,7 +44,8 @@ namespace ParkingLot
         }
       }
 
-      return new Response(cars, tickets, parkingStatus);
+      var parkedCars = cars.Take(tickets.Count).ToList();
+      return new Response(parkedCars, tickets, parkingStatus);
     }
 
     public Response FetchCar(Ticket ticket)

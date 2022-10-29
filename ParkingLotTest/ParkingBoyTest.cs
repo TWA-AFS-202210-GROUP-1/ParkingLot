@@ -151,6 +151,29 @@ namespace ParkingLotTest
     }
 
     [Fact]
+    public void Should_return_right_cars_when_fetch_given_corresponding_tickets_after_partially_successful_parking()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot(3));
+      parkingBoy.Park(new Car("Blue Sedan"));
+      var cars = new List<Car>
+      {
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      var response = parkingBoy.Park(cars);
+      var tickets = response.ShowTickets();
+      var parkedCars = response.ShowCars();
+      // when
+      var responses = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
+      var fetchedCars = responses.Select(response => response.ShowCar()).ToList();
+      // then
+      Assert.Equal(cars.Take(2).ToList(), parkedCars);
+      Assert.Equal(parkedCars, fetchedCars);
+    }
+
+    [Fact]
     public void Should_return_null_ticket_when_park_given_a_parked_car()
     {
       // given
