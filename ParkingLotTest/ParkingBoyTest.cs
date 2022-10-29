@@ -1,9 +1,8 @@
-using System.Linq;
-
 namespace ParkingLotTest
 {
   using ParkingLot;
   using System.Collections.Generic;
+  using System.Linq;
   using Xunit;
 
   public class ParkingBoyTest
@@ -94,6 +93,21 @@ namespace ParkingLotTest
       var fetchedCar = parkingBoy.FetchCar(null);
       // then
       Assert.Null(fetchedCar);
+    }
+
+    [Fact]
+    public void Should_return_null_when_fetch_car_given_used_ticket()
+    {
+      // given
+      var parkingLot = new ParkingLot();
+      var parkingBoy = new ParkingBoy(parkingLot);
+      var car = new Car("Blue Sedan");
+      var ticket = parkingBoy.Park(car);
+      // when
+      parkingBoy.FetchCar(ticket);
+      var anotherFetchedCar = parkingBoy.FetchCar(ticket);
+      // then
+      Assert.Null(anotherFetchedCar);
     }
   }
 }

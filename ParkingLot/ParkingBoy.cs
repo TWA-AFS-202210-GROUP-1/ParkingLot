@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ParkingLot
 {
@@ -33,7 +32,10 @@ namespace ParkingLot
 
     public Car FetchCar(Ticket ticket)
     {
-      return ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
+      var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
+      parkingLot.RemoveCar(fetchedCar);
+
+      return fetchedCar;
     }
   }
 }

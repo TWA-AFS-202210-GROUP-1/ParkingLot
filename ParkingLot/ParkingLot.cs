@@ -11,6 +11,14 @@ namespace ParkingLot
       ParkedCars.Add(car);
     }
 
+    public void RemoveCar(Car car)
+    {
+      if (HasCar(car) && car != null)
+      {
+        ParkedCars.Remove(car);
+      }
+    }
+
     public bool HasCar(Car car)
     {
       return ParkedCars.Contains(car);
