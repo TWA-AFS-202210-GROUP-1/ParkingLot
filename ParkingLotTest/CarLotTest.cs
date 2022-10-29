@@ -24,7 +24,7 @@ namespace ParkingLotTest
         }
 
         [Fact]
-        public void Should_return_car_when_lot_success_remove_car_given_a_car()
+        public void Should_return_car_when_lot_success_delete_car_given_a_car()
         {
             // given
             var carLot = new CarLot("LotID");
@@ -37,7 +37,7 @@ namespace ParkingLotTest
         }
 
         [Fact]
-        public void Should_return_null_when_lot_fail_to_remove_car_given_a_car()
+        public void Should_return_null_when_lot_fail_to_delete_car_given_a_car()
         {
             // given
             var carLot = new CarLot("LotID");

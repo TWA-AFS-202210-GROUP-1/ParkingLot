@@ -8,12 +8,12 @@ namespace ParkingLot
 {
     public class CarLot
     {
-        private string LotID;
+        private string lotID;
         public List<Car> CarList { get; }
 
         public CarLot(string lotID)
         {
-            LotID = lotID;
+            this.lotID = lotID;
             CarList = new List<Car>();
         }
 
@@ -29,8 +29,8 @@ namespace ParkingLot
             {
                 if (existedCar.LicensePlate == car.LicensePlate)
                 {
-                    CarList.Remove(car);
-                    return car;
+                    CarList.Remove(existedCar);
+                    return existedCar;
                 }
             }
 
