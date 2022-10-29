@@ -11,12 +11,11 @@ namespace ParkingLotTest
     public void Should_return_ticket_when_park_given_a_car()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
-      var car = new Car("Blue Sedan");
+      var parkingBoy = new ParkingBoy(new ParkingLot());
       // when
-      var ticket = parkingBoy.Park(car);
+      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
       // then
+      Assert.IsType<Ticket>(ticket);
       Assert.NotNull(ticket);
     }
 
@@ -24,11 +23,10 @@ namespace ParkingLotTest
     public void Should_return_same_car_when_fetch_car_given_a_ticket()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
+      var parkingBoy = new ParkingBoy(new ParkingLot());
       var car = new Car("Blue Sedan");
-      // when
       var ticket = parkingBoy.Park(car);
+      // when
       var fetchedCar = parkingBoy.FetchCar(ticket);
       // then
       Assert.Equal(car, fetchedCar);
@@ -38,8 +36,7 @@ namespace ParkingLotTest
     public void Should_return_tickets_when_park_multiple_cars_given_car_list()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
+      var parkingBoy = new ParkingBoy(new ParkingLot());
       var cars = new List<Car>
       {
         new Car("Blue Sedan"),
@@ -48,22 +45,22 @@ namespace ParkingLotTest
       // when
       var tickets = parkingBoy.Park(cars);
       // then
-      Assert.NotEmpty(tickets);
+      Assert.IsType<List<Ticket>>(tickets);
+      Assert.NotNull(tickets);
     }
 
     [Fact]
     public void Should_return_right_car_when_fetch_car_given_corresponding_ticket()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
+      var parkingBoy = new ParkingBoy(new ParkingLot());
       var cars = new List<Car>
       {
         new Car("Blue Sedan"),
         new Car("White SUV"),
       };
-      // when
       var tickets = parkingBoy.Park(cars);
+      // when
       var fetchedCars = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
       // then
       Assert.Equal(cars, fetchedCars);
@@ -73,10 +70,8 @@ namespace ParkingLotTest
     public void Should_return_null_when_fetch_car_given_wrong_ticket()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
-      var car = new Car("Blue Sedan");
-      var wrongTicket = new Ticket(car);
+      var parkingBoy = new ParkingBoy(new ParkingLot());
+      var wrongTicket = new Ticket(new Car("Blue Sedan"));
       // when
       var fetchedCar = parkingBoy.FetchCar(wrongTicket);
       // then
@@ -87,8 +82,7 @@ namespace ParkingLotTest
     public void Should_return_null_when_fetch_car_given_no_ticket()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
+      var parkingBoy = new ParkingBoy(new ParkingLot());
       // when
       var fetchedCar = parkingBoy.FetchCar(null);
       // then
@@ -99,15 +93,26 @@ namespace ParkingLotTest
     public void Should_return_null_when_fetch_car_given_used_ticket()
     {
       // given
-      var parkingLot = new ParkingLot();
-      var parkingBoy = new ParkingBoy(parkingLot);
-      var car = new Car("Blue Sedan");
-      var ticket = parkingBoy.Park(car);
-      // when
+      var parkingBoy = new ParkingBoy(new ParkingLot());
+      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
       parkingBoy.FetchCar(ticket);
+      // when
       var anotherFetchedCar = parkingBoy.FetchCar(ticket);
       // then
       Assert.Null(anotherFetchedCar);
+    }
+
+    [Fact]
+    public void Should_return_null_when_park_given_a_car_and_a_filled_parking_lot()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot(2));
+      parkingBoy.Park(new Car("Blue Sedan"));
+      parkingBoy.Park(new Car("Black Jeep"));
+      // when
+      var ticket = parkingBoy.Park(new Car("White SUV"));
+      // then
+      Assert.Null(ticket);
     }
   }
 }
