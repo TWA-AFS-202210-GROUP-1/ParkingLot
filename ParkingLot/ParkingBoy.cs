@@ -25,6 +25,11 @@ namespace ParkingLot
 
         public string FetchCar(Ticket ticket)
         {
+            if (ticket == null)
+            {
+                return null;
+            }
+
             var licensePlate = ticket.LicensePlate;
             var deleteCar = carLot.DeleteCar(new Car(licensePlate));
 
@@ -33,11 +38,6 @@ namespace ParkingLot
                 return licensePlate;
             }
 
-            return null;
-        }
-
-        public string FetchCar()
-        {
             return null;
         }
 
@@ -63,6 +63,5 @@ namespace ParkingLot
 
             return licensePlateList;
         }
-
     }
 }

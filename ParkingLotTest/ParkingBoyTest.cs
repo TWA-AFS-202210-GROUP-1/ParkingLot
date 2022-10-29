@@ -93,7 +93,7 @@ namespace ParkingLotTest
             var parkingBoy = new ParkingBoy();
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
-            var licensePlate = parkingBoy.FetchCar();
+            var licensePlate = parkingBoy.FetchCar(null);
             // then
             Assert.Null(licensePlate);
         }
