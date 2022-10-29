@@ -19,19 +19,31 @@ namespace ParkingLot
       return new Response(car, parkingTicket, parkingStatus);
     }
 
-    public List<Ticket> Park(List<Car> cars)
+    public Response Park(List<Car> cars)
     {
       var tickets = new List<Ticket>();
+      OperationStatus parkingStatus = OperationStatus.ParkingSuccessful;
       foreach (var car in cars)
       {
         var operationStatus = parkingLot.AddCar(car);
         if (operationStatus == OperationStatus.ParkingSuccessful)
         {
+          parkingStatus = operationStatus;
           tickets.Add(new Ticket(car));
+        }
+        else if (operationStatus == OperationStatus.NoVacancy)
+        {
+          parkingStatus = operationStatus;
+          break;
+        }
+        else
+        {
+          parkingStatus = OperationStatus.ParkingFailed;
+          break;
         }
       }
 
-      return tickets;
+      return new Response(cars, tickets, parkingStatus);
     }
 
     public Response FetchCar(Ticket ticket)

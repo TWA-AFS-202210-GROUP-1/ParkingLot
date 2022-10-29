@@ -42,7 +42,7 @@ namespace ParkingLotTest
         new Car("White SUV"),
       };
       // when
-      var tickets = parkingBoy.Park(cars);
+      var tickets = parkingBoy.Park(cars).ShowTickets();
       // then
       Assert.IsType<List<Ticket>>(tickets);
       Assert.NotEmpty(tickets);
@@ -58,7 +58,7 @@ namespace ParkingLotTest
         new Car("Blue Sedan"),
         new Car("White SUV"),
       };
-      var tickets = parkingBoy.Park(cars);
+      var tickets = parkingBoy.Park(cars).ShowTickets();
       // when
       var responses = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
       var fetchedCars = responses.Select(response => response.ShowCar()).ToList();
@@ -133,7 +133,7 @@ namespace ParkingLotTest
     }
 
     [Fact]
-    public void Should_return_2_tickets_when_park_given_3_cars_and_2_empty_parking_lot_slots()
+    public void Should_return_2_tickets_when_park_given_3_cars_and_2_empty_parking_slots()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot(3));
@@ -145,7 +145,7 @@ namespace ParkingLotTest
         new Car("Red Mustang"),
       };
       // when
-      var tickets = parkingBoy.Park(cars);
+      var tickets = parkingBoy.Park(cars).ShowTickets();
       // then
       Assert.Equal(2, tickets.Count);
     }
@@ -222,6 +222,25 @@ namespace ParkingLotTest
       // when
       var response = parkingBoy.Park(new Car("White SUV"));
       // then
+      Assert.Equal("Not enough position.", response.ShowErrorMessage());
+    }
+
+    [Fact]
+    public void Should_return_2_tickets_and_no_position_message_when_park_given_3_cars_and_2_empty_parking_slots()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot(3));
+      parkingBoy.Park(new Car("Blue Sedan"));
+      var cars = new List<Car>
+      {
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      // when
+      var response = parkingBoy.Park(cars);
+      // then
+      Assert.Equal(2, response.ShowTickets().Count);
       Assert.Equal("Not enough position.", response.ShowErrorMessage());
     }
   }
