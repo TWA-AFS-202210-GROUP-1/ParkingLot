@@ -26,9 +26,9 @@ namespace ParkingLotTest
       var car = new Car("Blue Sedan");
       var ticket = parkingBoy.Park(car);
       // when
-      var fetchedCar = parkingBoy.FetchCar(ticket);
+      var response = parkingBoy.FetchCar(ticket);
       // then
-      Assert.Equal(car, fetchedCar);
+      Assert.Equal(car, response.ShowCar());
     }
 
     [Fact]
@@ -60,49 +60,50 @@ namespace ParkingLotTest
       };
       var tickets = parkingBoy.Park(cars);
       // when
-      var fetchedCars = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
+      var responses = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
+      var fetchedCars = responses.Select(response => response.ShowCar()).ToList();
       // then
       Assert.Equal(cars, fetchedCars);
     }
 
     [Fact]
-    public void Should_return_null_when_fetch_car_given_wrong_ticket()
+    public void Should_return_null_car_when_fetch_car_given_wrong_ticket()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
       var wrongTicket = new Ticket(new Car("Blue Sedan"));
       // when
-      var fetchedCar = parkingBoy.FetchCar(wrongTicket);
+      var response = parkingBoy.FetchCar(wrongTicket);
       // then
-      Assert.Null(fetchedCar);
+      Assert.Null(response.ShowCar());
     }
 
     [Fact]
-    public void Should_return_null_when_fetch_car_given_no_ticket()
+    public void Should_return_null_car_when_fetch_car_given_no_ticket()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
       // when
-      var fetchedCar = parkingBoy.FetchCar(null);
+      var response = parkingBoy.FetchCar(null);
       // then
-      Assert.Null(fetchedCar);
+      Assert.Null(response.ShowCar());
     }
 
     [Fact]
-    public void Should_return_null_when_fetch_car_given_used_ticket()
+    public void Should_return_null_car_when_fetch_car_given_used_ticket()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
       var ticket = parkingBoy.Park(new Car("Blue Sedan"));
       parkingBoy.FetchCar(ticket);
       // when
-      var anotherFetchedCar = parkingBoy.FetchCar(ticket);
+      var response = parkingBoy.FetchCar(ticket);
       // then
-      Assert.Null(anotherFetchedCar);
+      Assert.Null(response.ShowCar());
     }
 
     [Fact]
-    public void Should_return_null_when_park_given_a_car_and_a_filled_parking_lot()
+    public void Should_return_null_ticket_when_park_given_a_car_and_a_filled_parking_lot()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot(2));
@@ -149,7 +150,7 @@ namespace ParkingLotTest
     }
 
     [Fact]
-    public void Should_return_null_when_park_given_a_parked_car()
+    public void Should_return_null_ticket_when_park_given_a_parked_car()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
@@ -162,7 +163,7 @@ namespace ParkingLotTest
     }
 
     [Fact]
-    public void Should_return_null_when_park_given_a_null_car()
+    public void Should_return_null_ticket_when_park_given_a_null_car()
     {
       // given
       var parkingBoy = new ParkingBoy(new ParkingLot());
@@ -171,6 +172,18 @@ namespace ParkingLotTest
       var ticket = parkingBoy.Park(car);
       // then
       Assert.Null(ticket);
+    }
+
+    [Fact]
+    public void Should_return_wrong_ticket_message_when_fetch_car_given_wrong_ticket()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot());
+      var wrongTicket = new Ticket(new Car("Blue Sedan"));
+      // when
+      var response = parkingBoy.FetchCar(wrongTicket);
+      // then
+      Assert.Equal("Unrecognized parking ticket.", response.ShowErrorMessage());
     }
   }
 }

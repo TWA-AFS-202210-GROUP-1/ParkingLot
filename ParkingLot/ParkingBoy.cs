@@ -34,12 +34,13 @@ namespace ParkingLot
       return tickets;
     }
 
-    public Car FetchCar(Ticket ticket)
+    public Response FetchCar(Ticket ticket)
     {
       var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
+      var response = new Response(fetchedCar, ticket);
       parkingLot.RemoveCar(fetchedCar);
 
-      return fetchedCar;
+      return response;
     }
   }
 }
