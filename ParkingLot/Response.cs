@@ -4,6 +4,7 @@
   {
     private readonly Car car;
     private readonly Ticket ticket;
+    private readonly bool isNullTicket;
     private readonly bool isValidTicket;
     private string errorMessage = string.Empty;
 
@@ -11,7 +12,8 @@
     {
       this.car = car;
       this.ticket = ticket;
-      isValidTicket = car != null && ticket != null;
+      isNullTicket = ticket == null;
+      isValidTicket = ticket != null && car != null;
     }
 
     public Car ShowCar()
@@ -26,7 +28,11 @@
 
     public string ShowErrorMessage()
     {
-      if (!isValidTicket)
+      if (isNullTicket)
+      {
+        errorMessage = "Please provide your parking ticket.";
+      }
+      else if (!isValidTicket)
       {
         errorMessage = "Unrecognized parking ticket.";
       }
