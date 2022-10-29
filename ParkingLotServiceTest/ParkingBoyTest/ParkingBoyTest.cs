@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using ParkingLotService;
 using ParkingLotService.Const;
 using ParkingLotService.ParkingBoys;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ParkingLotServiceTest.ParkingBoyTest

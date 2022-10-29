@@ -1,9 +1,8 @@
+using ParkingLotService.Const;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using ParkingLotService.Const;
 
 namespace ParkingLotService.ParkingBoys;
 
@@ -40,7 +39,22 @@ public class ParkingBoy
 
     public virtual List<Response<Ticket>> ParkCars(List<Car> cars)
     {
-        return cars.Select(ParkCar).ToList();
+        var tickets = new List<Response<Ticket>>();
+        foreach (var lot in ManagingLots)
+        {
+            while (lot.CarNumber < lot.MaxCapacity && tickets.Count < cars.Count)
+            {
+                if (lot.AddCar(cars[tickets.Count]))
+                {
+                    var ticket = SignTicket(new Ticket(this, cars[tickets.Count], lot));
+                    tickets.Add(new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage));
+                }
+            }
+        }
+
+        AddNullTickets(cars, tickets);
+
+        return tickets;
     }
 
     public Response<Car> FetchCar(Ticket ticket)
@@ -55,6 +69,7 @@ public class ParkingBoy
             var thisCarParkingLotName = ticket.ParkingLot.Name;
             var lot = ManagingLots.Find(lot => lot.Name.Equals(thisCarParkingLotName));
             var car = lot?.PopCar(ticket.Car.LicenseNumber);
+
             if (car != null)
             {
                 return new Response<Car>(car, ParkingBoyConst.GetCarMessage);
@@ -78,13 +93,20 @@ public class ParkingBoy
 
     private string GenerateMd5CodeForTicket(Car car)
     {
-        // Use input string to calculate MD5 hash
         using (var md5 = MD5.Create())
         {
             byte[] inputBytes = Encoding.ASCII.GetBytes(Name + car.LicenseNumber + Token);
             var hashBytes = md5.ComputeHash(inputBytes);
 
             return Convert.ToHexString(hashBytes);
+        }
+    }
+
+    private void AddNullTickets(List<Car> cars, List<Response<Ticket>> tickets)
+    {
+        while (tickets.Count < cars.Count)
+        {
+            tickets.Add(new Response<Ticket>(null, ParkingBoyConst.NoPositionMessage));
         }
     }
 }
