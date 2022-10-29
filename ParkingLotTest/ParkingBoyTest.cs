@@ -185,5 +185,18 @@ namespace ParkingLotTest
       // then
       Assert.Equal("Unrecognized parking ticket.", response.ShowErrorMessage());
     }
+
+    [Fact]
+    public void Should_return_wrong_ticket_message_when_fetch_car_given_used_ticket()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot());
+      var ticket = parkingBoy.Park(new Car("Blue Sedan"));
+      parkingBoy.FetchCar(ticket);
+      // when
+      var response = parkingBoy.FetchCar(ticket);
+      // then
+      Assert.Equal("Unrecognized parking ticket.", response.ShowErrorMessage());
+    }
   }
 }
