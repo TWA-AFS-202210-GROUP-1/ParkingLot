@@ -23,9 +23,9 @@ namespace ParkingLotTest
             var parkingBoy = new ParkingBoy();
             var car = new Car("ThisIsLicensePlate");
             // when
-            var ticket = parkingBoy.ParkCar(car);
+            var parkResult = parkingBoy.ParkCar(car);
             // then
-            Assert.NotNull(ticket);
+            Assert.NotNull(parkResult.subject);
         }
 
         [Fact]
@@ -34,11 +34,11 @@ namespace ParkingLotTest
             // given
             var parkingBoy = new ParkingBoy();
             var car = new Car("ThisIsLicensePlate");
-            var ticket = parkingBoy.ParkCar(car);
+            var parkResult = parkingBoy.ParkCar(car);
             // when
-            var fetchResult = parkingBoy.FetchCar(ticket);
+            var fetchResult = parkingBoy.FetchCar(parkResult.subject);
             // then
-            Assert.Equal(car, fetchResult.car);
+            Assert.Equal(car, fetchResult.subject);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace ParkingLotTest
             // when
             var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Null(fetchResult.car);
+            Assert.Null(fetchResult.subject);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace ParkingLotTest
             // when
             var fetchResult = parkingBoy.FetchCar(null);
             // then
-            Assert.Null(fetchResult.car);
+            Assert.Null(fetchResult.subject);
         }
 
         [Fact]
@@ -106,13 +106,13 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
-            var ticket = parkingBoy.ParkCar(new Car("LicensePlate"));
-            parkingBoy.FetchCar(ticket);
+            var parkResult = parkingBoy.ParkCar(new Car("LicensePlate"));
+            parkingBoy.FetchCar(parkResult.subject);
             // when
-            var fetchResult = parkingBoy.FetchCar(ticket);
+            var fetchResult = parkingBoy.FetchCar(parkResult.subject);
             // then
-            Assert.Null(fetchResult.car);
-            Assert.True(ticket.Used);
+            Assert.Null(fetchResult.subject);
+            Assert.True(parkResult.subject.Used);
         }
 
         [Fact]
@@ -120,7 +120,6 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
-            var carLot = new CarLot("lotId");
             var carList = new List<Car>();
             for (int num = 0; num < 10; num++)
             {
@@ -131,9 +130,9 @@ namespace ParkingLotTest
             var extraCar = new Car("LicensePlateExtra");
 
             // when
-            var ticket = parkingBoy.ParkCar(extraCar);
+            var parkResult = parkingBoy.ParkCar(extraCar);
             // then
-            Assert.Null(ticket);
+            Assert.Null(parkResult.subject);
         }
 
         [Fact]
@@ -170,6 +169,26 @@ namespace ParkingLotTest
             var fetchResult = parkingBoy.FetchCar(null);
             // then
             Assert.Equal("Please provide your parking ticket.", fetchResult.message);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_lot_is_full_given_a_car()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var carList = new List<Car>();
+            for (int num = 0; num < 10; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var fetchResult = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Equal("Not enough position.", fetchResult.message);
         }
     }
 }

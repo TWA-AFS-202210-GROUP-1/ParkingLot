@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 namespace ParkingLot
 {
     using System;
+    using System.Net.Sockets;
+
     public class ParkingBoy
     {
         private CarLot carLot;
@@ -13,21 +15,22 @@ namespace ParkingLot
             carLot = new CarLot("lotID");
         }
 
-        public Ticket ParkCar(Car car)
+        public BoyActionResult<Ticket> ParkCar(Car car)
         {
             if (carLot.AddCar(car))
             {
-                return new Ticket(car.LicensePlate, "lotID");
+                var ticket = new Ticket(car.LicensePlate, "lotID");
+                return new BoyActionResult<Ticket>(ticket, null);
             }
 
-            return null;
+            return new BoyActionResult<Ticket>(null, "Not enough position.");
         }
 
-        public FetchResult FetchCar(Ticket ticket)
+        public BoyActionResult<Car> FetchCar(Ticket ticket)
         {
             if (ticket == null || ticket.Used)
             {
-                return new FetchResult(null, "Please provide your parking ticket.");
+                return new BoyActionResult<Car>(null, "Please provide your parking ticket.");
             }
 
             var licensePlate = ticket.LicensePlate;
@@ -36,10 +39,10 @@ namespace ParkingLot
             if (deleteCar != null)
             {
                 ticket.Used = true;
-                return new FetchResult(deleteCar, null);
+                return new BoyActionResult<Car>(deleteCar, null);
             }
 
-            return new FetchResult(null, "Unrecognized parking ticket.");
+            return new BoyActionResult<Car>(null, "Unrecognized parking ticket.");
         }
 
         public List<Ticket> ParkManyCars(List<Car> carList)
@@ -47,8 +50,8 @@ namespace ParkingLot
             var ticketList = new List<Ticket>();
             foreach (var car in carList)
             {
-                var ticket = ParkCar(car);
-                ticketList.Add(ticket);
+                var boyActionResult = ParkCar(car);
+                ticketList.Add(boyActionResult.subject);
             }
 
             return ticketList;
@@ -59,7 +62,7 @@ namespace ParkingLot
             var carList = new List<Car>();
             foreach (var ticket in ticketList)
             {
-                carList.Add(FetchCar(ticket).car);
+                carList.Add(FetchCar(ticket).subject);
             }
 
             return carList;
