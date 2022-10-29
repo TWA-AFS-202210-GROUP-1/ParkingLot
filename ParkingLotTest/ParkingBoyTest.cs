@@ -6,6 +6,7 @@ using System.IO.Compression;
 namespace ParkingLotTest
 {
     using ParkingLot;
+    using System.Net.Sockets;
     using System.Security.Cryptography;
     using System.Text.RegularExpressions;
     using Xunit;
@@ -109,6 +110,27 @@ namespace ParkingLotTest
             // then
             Assert.Null(fetchedCar);
             Assert.True(ticket.Used);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_lot_is_full_given_a_car()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var carLot = new CarLot("lotId");
+            var carList = new List<Car>();
+            for (int num = 0; num < 10; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var ticket = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Null(ticket);
         }
     }
 }

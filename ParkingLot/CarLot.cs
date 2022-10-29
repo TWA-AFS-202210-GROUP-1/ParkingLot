@@ -9,18 +9,27 @@ namespace ParkingLot
     public class CarLot
     {
         private string lotId;
+        private int capacity;
         public List<Car> CarList { get; }
 
         public CarLot(string lotId)
         {
             this.lotId = lotId;
             this.CarList = new List<Car>();
+            this.capacity = 10;
         }
 
         public bool AddCar(Car car)
         {
-            CarList.Add(car);
-            return true;
+            if (CarList.Count < capacity)
+            {
+                CarList.Add(car);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public Car DeleteCar(Car car)
