@@ -16,7 +16,7 @@ namespace ParkingLot
 
     public OperationStatus AddCar(Car car)
     {
-      if (EmptySlots > 0 && car != null)
+      if (EmptySlots > 0 && car != null && !HasCar(car))
       {
         ParkedCars.Add(car);
         EmptySlots--;
