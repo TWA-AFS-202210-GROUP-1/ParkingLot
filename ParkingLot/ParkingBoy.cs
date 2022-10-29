@@ -23,7 +23,7 @@ namespace ParkingLot
             return null;
         }
 
-        public Car FetchCar(Ticket ticket)
+        public FetchResult FetchCar(Ticket ticket)
         {
             if (ticket == null || ticket.Used)
             {
@@ -36,10 +36,11 @@ namespace ParkingLot
             if (deleteCar != null)
             {
                 ticket.Used = true;
-                return deleteCar;
+                return new FetchResult(deleteCar, "aaa");
             }
 
-            return null;
+            var fetchResult = new FetchResult(null, "Unrecognized parking ticket.");
+            return fetchResult;
         }
 
         public List<Ticket> ParkManyCars(List<Car> carList)
@@ -59,7 +60,7 @@ namespace ParkingLot
             var carList = new List<Car>();
             foreach (var ticket in ticketList)
             {
-                carList.Add(FetchCar(ticket));
+                carList.Add(FetchCar(ticket).car);
             }
 
             return carList;

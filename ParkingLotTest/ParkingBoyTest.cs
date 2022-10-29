@@ -5,8 +5,11 @@ using System.IO.Compression;
 
 namespace ParkingLotTest
 {
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
     using ParkingLot;
     using System.Net.Sockets;
+    using System.Runtime.ConstrainedExecution;
+    using System.Runtime.InteropServices;
     using System.Security.Cryptography;
     using System.Text.RegularExpressions;
     using Xunit;
@@ -33,9 +36,9 @@ namespace ParkingLotTest
             var car = new Car("ThisIsLicensePlate");
             var ticket = parkingBoy.ParkCar(car);
             // when
-            var fetchedCar = parkingBoy.FetchCar(ticket);
+            var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Equal(fetchedCar, car);
+            Assert.Equal("aaa", fetchResult.message);
         }
 
         [Fact]
@@ -81,9 +84,9 @@ namespace ParkingLotTest
             var ticket = new Ticket("InvalidLicensePlate", "Invalid");
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
-            var car = parkingBoy.FetchCar(ticket);
+            var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Null(car);
+            Assert.Null(fetchResult.car);
         }
 
         [Fact]
@@ -93,9 +96,9 @@ namespace ParkingLotTest
             var parkingBoy = new ParkingBoy();
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
-            var car = parkingBoy.FetchCar(null);
+            var fetchResult = parkingBoy.FetchCar(null);
             // then
-            Assert.Null(car);
+            Assert.Null(fetchResult);
         }
 
         [Fact]
@@ -106,9 +109,9 @@ namespace ParkingLotTest
             var ticket = parkingBoy.ParkCar(new Car("LicensePlate"));
             parkingBoy.FetchCar(ticket);
             // when
-            var fetchedCar = parkingBoy.FetchCar(ticket);
+            var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Null(fetchedCar);
+            Assert.Null(fetchResult);
             Assert.True(ticket.Used);
         }
 
@@ -131,6 +134,24 @@ namespace ParkingLotTest
             var ticket = parkingBoy.ParkCar(extraCar);
             // then
             Assert.Null(ticket);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_boy_fetch_given_a_wrong_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            parkingBoy.ParkManyCars(carList);
+            var ticket = new Ticket("InvalidLicense", "lotId");
+            // when
+            var fetchResult = parkingBoy.FetchCar(ticket);
+            // then
+            Assert.Equal("Unrecognized parking ticket.", fetchResult.message);
         }
     }
 }
