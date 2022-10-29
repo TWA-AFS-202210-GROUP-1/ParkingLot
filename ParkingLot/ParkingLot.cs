@@ -14,21 +14,31 @@ namespace ParkingLot
     public int Capacity { get; private set; }
     public int EmptySlots { get; private set; }
 
-    public void AddCar(Car car)
+    public OperationStatus AddCar(Car car)
     {
-      if (EmptySlots > 0)
+      if (EmptySlots > 0 && car != null)
       {
         ParkedCars.Add(car);
         EmptySlots--;
+        return OperationStatus.Successful;
+      }
+      else
+      {
+        return OperationStatus.Failed;
       }
     }
 
-    public void RemoveCar(Car car)
+    public OperationStatus RemoveCar(Car car)
     {
       if (HasCar(car) && car != null)
       {
         ParkedCars.Remove(car);
         EmptySlots++;
+        return OperationStatus.Successful;
+      }
+      else
+      {
+        return OperationStatus.Failed;
       }
     }
 

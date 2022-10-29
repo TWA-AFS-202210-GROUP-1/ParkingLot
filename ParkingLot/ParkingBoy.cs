@@ -13,8 +13,8 @@ namespace ParkingLot
 
     public Ticket Park(Car car)
     {
-      var parkingTicket = parkingLot.EmptySlots > 0 ? new Ticket(car) : null;
-      parkingLot.AddCar(car);
+      var operationStatus = parkingLot.AddCar(car);
+      var parkingTicket = operationStatus == OperationStatus.Successful ? new Ticket(car) : null;
 
       return parkingTicket;
     }
