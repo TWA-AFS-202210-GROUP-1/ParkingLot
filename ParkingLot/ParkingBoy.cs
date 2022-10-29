@@ -11,8 +11,8 @@ namespace ParkingLot
 
         public Ticket ParkCar(Car car)
         {
-            var lotNo = 1;
-            return new Ticket(car.LicensePlate, lotNo);
+            var lotID = "lotID";
+            return new Ticket(car.LicensePlate, lotID);
         }
 
         public string FetchCar(Ticket ticket)

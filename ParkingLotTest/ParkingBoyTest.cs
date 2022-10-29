@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace ParkingLotTest
 {
     using ParkingLot;
@@ -16,19 +20,6 @@ namespace ParkingLotTest
             var ticket = parkingBoy.ParkCar(car);
             // then
             Assert.NotNull(ticket);
-        }
-
-        [Fact]
-        public void Should_return_a_car_when_parking_boy_fetch_a_car_given_a_ticket()
-        {
-            // given
-            var parkingBoy = new ParkingBoy();
-            var car = new Car("ThisIsLicensePlate");
-            var ticket = parkingBoy.ParkCar(car);
-            // when
-            var licensePlate = parkingBoy.FetchCar(ticket);
-            // then
-            Assert.Equal("ThisIsLicensePlate", licensePlate);
         }
     }
 }

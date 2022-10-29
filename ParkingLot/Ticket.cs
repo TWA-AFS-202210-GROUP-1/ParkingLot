@@ -2,12 +2,12 @@
 {
     public class Ticket
     {
-        public string licensePlate;
-        private int lotNo;
-        public Ticket(string licensePlate, int lotNo)
+        private string licensePlate;
+        private string lotID;
+        public Ticket(string licensePlate, string lotID)
         {
             this.licensePlate = licensePlate;
-            this.lotNo = lotNo;
+            this.lotID = lotID;
         }
 
         public string LicensePlate
