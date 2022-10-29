@@ -24,8 +24,11 @@ namespace ParkingLot
       var tickets = new List<Ticket>();
       foreach (var car in cars)
       {
-        parkingLot.AddCar(car);
-        tickets.Add(new Ticket(car));
+        var operationStatus = parkingLot.AddCar(car);
+        if (operationStatus == OperationStatus.Successful)
+        {
+          tickets.Add(new Ticket(car));
+        }
       }
 
       return tickets;

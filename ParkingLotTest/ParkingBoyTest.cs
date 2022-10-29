@@ -129,5 +129,23 @@ namespace ParkingLotTest
       Assert.IsType<Ticket>(newTicket);
       Assert.Equal(0, parkingLot.EmptySlots);
     }
+
+    [Fact]
+    public void Should_return_2_tickets_when_park_given_3_cars_and_2_empty_parking_lot_slots()
+    {
+      // given
+      var parkingBoy = new ParkingBoy(new ParkingLot(3));
+      parkingBoy.Park(new Car("Blue Sedan"));
+      var cars = new List<Car>
+      {
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      // when
+      var tickets = parkingBoy.Park(cars);
+      // then
+      Assert.Equal(2, tickets.Count);
+    }
   }
 }
