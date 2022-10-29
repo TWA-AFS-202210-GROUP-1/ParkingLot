@@ -14,7 +14,7 @@ namespace ParkingLotTest
       // given
       var parkingLot = new ParkingLot();
       var parkingBoy = new ParkingBoy(parkingLot);
-      var car = new Car();
+      var car = new Car("Blue Sedan");
       // when
       var ticket = parkingBoy.Park(car);
       // then
@@ -27,7 +27,7 @@ namespace ParkingLotTest
       // given
       var parkingLot = new ParkingLot();
       var parkingBoy = new ParkingBoy(parkingLot);
-      var car = new Car();
+      var car = new Car("Blue Sedan");
       // when
       var ticket = parkingBoy.Park(car);
       var fetchedCar = parkingBoy.FetchCar(ticket);
@@ -43,8 +43,8 @@ namespace ParkingLotTest
       var parkingBoy = new ParkingBoy(parkingLot);
       var cars = new List<Car>
       {
-        new Car(),
-        new Car(),
+        new Car("Blue Sedan"),
+        new Car("White SUV"),
       };
       // when
       var tickets = parkingBoy.Park(cars);
@@ -60,14 +60,28 @@ namespace ParkingLotTest
       var parkingBoy = new ParkingBoy(parkingLot);
       var cars = new List<Car>
       {
-        new Car(),
-        new Car(),
+        new Car("Blue Sedan"),
+        new Car("White SUV"),
       };
       // when
       var tickets = parkingBoy.Park(cars);
       var fetchedCars = tickets.Select(ticket => parkingBoy.FetchCar(ticket)).ToList();
       // then
       Assert.Equal(cars, fetchedCars);
+    }
+
+    [Fact]
+    public void Should_return_null_when_fetch_car_given_wrong_ticket()
+    {
+      // given
+      var parkingLot = new ParkingLot();
+      var parkingBoy = new ParkingBoy(parkingLot);
+      var car = new Car("Blue Sedan");
+      var wrongTicket = new Ticket(car);
+      // when
+      var fetchedCar = parkingBoy.FetchCar(wrongTicket);
+      // then
+      Assert.Null(fetchedCar);
     }
   }
 }

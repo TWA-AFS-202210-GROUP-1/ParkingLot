@@ -33,7 +33,7 @@ namespace ParkingLot
 
     public Car FetchCar(Ticket ticket)
     {
-      return ticket.Car;
+      return parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
     }
   }
 }
