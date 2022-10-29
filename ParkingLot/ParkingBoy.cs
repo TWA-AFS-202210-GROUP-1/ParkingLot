@@ -9,18 +9,22 @@ namespace ParkingLot
     public class ParkingBoy
     {
         private CarLot carLot;
-
+        private List<CarLot> carLotList;
         public ParkingBoy()
         {
             carLot = new CarLot("lotID");
+            carLotList = new List<CarLot>();
         }
 
         public BoyActionResult<Ticket> ParkCar(Car car)
         {
-            if (carLot.AddCar(car))
+            foreach (var carLot in carLotList)
             {
-                var ticket = new Ticket(car.LicensePlate, "lotID");
-                return new BoyActionResult<Ticket>(ticket, null);
+                if (carLot.AddCar(car))
+                {
+                    var ticket = new Ticket(car.LicensePlate, "lotID");
+                    return new BoyActionResult<Ticket>(ticket, null);
+                }
             }
 
             return new BoyActionResult<Ticket>(null, "Not enough position.");
@@ -34,12 +38,15 @@ namespace ParkingLot
             }
 
             var licensePlate = ticket.LicensePlate;
-            var deleteCar = carLot.DeleteCar(new Car(licensePlate));
 
-            if (deleteCar != null)
+            foreach (var carLot in carLotList)
             {
-                ticket.Used = true;
-                return new BoyActionResult<Car>(deleteCar, null);
+                var deleteCar = carLot.DeleteCar(new Car(licensePlate));
+                if (deleteCar != null)
+                {
+                    ticket.Used = true;
+                    return new BoyActionResult<Car>(deleteCar, null);
+                }
             }
 
             return new BoyActionResult<Car>(null, "Unrecognized parking ticket.");
@@ -66,6 +73,11 @@ namespace ParkingLot
             }
 
             return carList;
+        }
+
+        public void ManageParkingLots(CarLot carLot)
+        {
+            carLotList.Add(carLot);
         }
     }
 }

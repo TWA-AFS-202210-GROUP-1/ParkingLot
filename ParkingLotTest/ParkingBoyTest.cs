@@ -21,6 +21,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var car = new Car("ThisIsLicensePlate");
             // when
             var parkResult = parkingBoy.ParkCar(car);
@@ -33,6 +35,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var car = new Car("ThisIsLicensePlate");
             var parkResult = parkingBoy.ParkCar(car);
             // when
@@ -46,6 +50,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>()
             {
                 new Car("LicensePlate1"),
@@ -60,10 +66,12 @@ namespace ParkingLotTest
         }
 
         [Fact]
-        public void Should_return_cars_when_parking_boy_fetch_cars_given_a_tickets()
+        public void Should_return_cars_when_parking_boy_fetch_cars_given_tickets()
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>()
             {
                 new Car("LicensePlate1"),
@@ -81,6 +89,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var ticket = new Ticket("InvalidLicensePlate", "Invalid");
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
@@ -94,6 +104,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             parkingBoy.ParkCar(new Car("LicensePlate"));
             // when
             var fetchResult = parkingBoy.FetchCar(null);
@@ -106,6 +118,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var parkResult = parkingBoy.ParkCar(new Car("LicensePlate"));
             parkingBoy.FetchCar(parkResult.subject);
             // when
@@ -120,8 +134,10 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>();
-            for (int num = 0; num < 10; num++)
+            for (int num = 0; num < 20; num++)
             {
                 carList.Add(new Car($"LicensePlate{num}"));
             }
@@ -140,6 +156,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>()
             {
                 new Car("LicensePlate1"),
@@ -158,6 +176,8 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>()
             {
                 new Car("LicensePlate1"),
@@ -176,8 +196,10 @@ namespace ParkingLotTest
         {
             // given
             var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
             var carList = new List<Car>();
-            for (int num = 0; num < 10; num++)
+            for (int num = 0; num < 20; num++)
             {
                 carList.Add(new Car($"LicensePlate{num}"));
             }
@@ -189,6 +211,32 @@ namespace ParkingLotTest
             var fetchResult = parkingBoy.ParkCar(extraCar);
             // then
             Assert.Equal("Not enough position.", fetchResult.message);
+        }
+
+        [Fact]
+        public void Should_return_tickets_of_second_parking_lot_when_first_parking_lot_is_full_given_cars()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var parkingLot1 = new CarLot("first parking lot");
+            var parkingLot2 = new CarLot("Second parking lot");
+            parkingBoy.ManageParkingLots(parkingLot1);
+            parkingBoy.ManageParkingLots(parkingLot2);
+
+            var carList = new List<Car>();
+            for (int num = 0; num < 10; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var parkResult = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Equal("LicensePlateExtra", parkResult.subject.LicensePlate);
         }
     }
 }
