@@ -27,7 +27,7 @@ namespace ParkingLot
         {
             if (ticket == null || ticket.Used)
             {
-                return null;
+                return new FetchResult(null, "Please provide your parking ticket.");
             }
 
             var licensePlate = ticket.LicensePlate;
@@ -36,11 +36,10 @@ namespace ParkingLot
             if (deleteCar != null)
             {
                 ticket.Used = true;
-                return new FetchResult(deleteCar, "aaa");
+                return new FetchResult(deleteCar, null);
             }
 
-            var fetchResult = new FetchResult(null, "Unrecognized parking ticket.");
-            return fetchResult;
+            return new FetchResult(null, "Unrecognized parking ticket.");
         }
 
         public List<Ticket> ParkManyCars(List<Car> carList)

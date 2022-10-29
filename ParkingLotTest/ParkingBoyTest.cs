@@ -38,7 +38,7 @@ namespace ParkingLotTest
             // when
             var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Equal("aaa", fetchResult.message);
+            Assert.Equal(car, fetchResult.car);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace ParkingLotTest
             // when
             var fetchResult = parkingBoy.FetchCar(null);
             // then
-            Assert.Null(fetchResult);
+            Assert.Null(fetchResult.car);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace ParkingLotTest
             // when
             var fetchResult = parkingBoy.FetchCar(ticket);
             // then
-            Assert.Null(fetchResult);
+            Assert.Null(fetchResult.car);
             Assert.True(ticket.Used);
         }
 
@@ -152,6 +152,24 @@ namespace ParkingLotTest
             var fetchResult = parkingBoy.FetchCar(ticket);
             // then
             Assert.Equal("Unrecognized parking ticket.", fetchResult.message);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_boy_fetch_given_null_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            parkingBoy.ParkManyCars(carList);
+
+            // when
+            var fetchResult = parkingBoy.FetchCar(null);
+            // then
+            Assert.Equal("Please provide your parking ticket.", fetchResult.message);
         }
     }
 }
