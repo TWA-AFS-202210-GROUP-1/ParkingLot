@@ -69,5 +69,28 @@ namespace ParkingLotTest
             Assert.Equal("second parking lot", ticketList[1].lotId);
             Assert.Equal("first parking lot", ticketList[2].lotId);
         }
+
+        [Fact]
+        public void Should_return_null_and_error_message_when_parking_lot_is_full_given_a_car()
+        {
+            // given
+            var smartParkingBoy = new SmartParkingBoy();
+            smartParkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            smartParkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>();
+            for (int num = 0; num < 20; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            smartParkingBoy.ParkManyCars(carList);
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var parkResult = smartParkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Null(parkResult.subject);
+            Assert.Equal("Not enough position.", parkResult.message);
+        }
     }
 }
