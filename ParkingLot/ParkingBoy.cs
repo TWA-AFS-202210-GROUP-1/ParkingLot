@@ -9,20 +9,20 @@ namespace ParkingLot
     public class ParkingBoy
     {
         private CarLot carLot;
-        private List<CarLot> carLotList;
+        public List<CarLot> carLotList { get; set; }
         public ParkingBoy()
         {
-            carLot = new CarLot("lotID");
+            carLot = new CarLot(null);
             carLotList = new List<CarLot>();
         }
 
-        public BoyActionResult<Ticket> ParkCar(Car car)
+        public virtual BoyActionResult<Ticket> ParkCar(Car car)
         {
             foreach (var carLot in carLotList)
             {
                 if (carLot.AddCar(car))
                 {
-                    var ticket = new Ticket(car.LicensePlate, "lotID");
+                    var ticket = new Ticket(car.LicensePlate, carLot.lotId);
                     return new BoyActionResult<Ticket>(ticket, null);
                 }
             }
@@ -45,6 +45,7 @@ namespace ParkingLot
                 if (deleteCar != null)
                 {
                     ticket.Used = true;
+                    ticket.lotId = carLot.lotId;
                     return new BoyActionResult<Car>(deleteCar, null);
                 }
             }

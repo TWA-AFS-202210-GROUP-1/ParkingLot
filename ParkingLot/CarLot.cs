@@ -8,9 +8,9 @@ namespace ParkingLot
 {
     public class CarLot
     {
-        private string lotId;
-        private int capacity;
-        public List<Car> CarList { get; }
+        public string lotId { get; set; }
+        public int capacity { get; set; }
+        public List<Car> CarList { get; set; }
 
         public CarLot(string lotId)
         {

@@ -2,7 +2,7 @@
 {
     public class Ticket
     {
-        private string lotId;
+        public string lotId { get; set; }
         public string LicensePlate { get; set; }
         public bool Used { get; set; }
 

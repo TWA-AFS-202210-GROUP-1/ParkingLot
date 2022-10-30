@@ -208,9 +208,9 @@ namespace ParkingLotTest
             var extraCar = new Car("LicensePlateExtra");
 
             // when
-            var fetchResult = parkingBoy.ParkCar(extraCar);
+            var parkResult = parkingBoy.ParkCar(extraCar);
             // then
-            Assert.Equal("Not enough position.", fetchResult.message);
+            Assert.Equal("Not enough position.", parkResult.message);
         }
 
         [Fact]
