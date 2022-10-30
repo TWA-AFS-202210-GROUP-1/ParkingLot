@@ -58,5 +58,23 @@ namespace ParkingLotTest
 
             Assert.NotEqual(car, car_get);
         }
+
+        [Fact]
+        public void Should_get_no_car_when_ticket_used_if_given_a_used_ticket()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            Car car = new Car();
+
+            parkingboy.Checkin(car);
+
+            Ticket ticket = car.Myticket;
+
+            var car_get = parkingboy.Checkout(ticket);
+
+            car_get = parkingboy.Checkout(ticket);
+
+            Assert.NotEqual(car, car_get);
+        }
     }
 }
