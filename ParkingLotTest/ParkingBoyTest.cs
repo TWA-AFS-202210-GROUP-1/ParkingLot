@@ -395,5 +395,29 @@ namespace ParkingLotTest
       // then
       Assert.Equal("Not enough position.", response.ShowErrorMessage());
     }
+
+    [Fact]
+    public void Should_return_null_ticket_and_no_position_message_when_park_given_all_filled_parking_lots()
+    {
+      // given
+      var parkingLots = new List<ParkingLot>
+      {
+        new ParkingLot(1),
+        new ParkingLot(2),
+      };
+      var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Blue Sedan"),
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+      };
+      parkingBoy.Park(cars);
+      // when
+      var response = parkingBoy.Park(new Car("Red Mustang"));
+      // then
+      Assert.Equal("Not enough position.", response.ShowErrorMessage());
+      Assert.Null(response.ShowTicket());
+    }
   }
 }
