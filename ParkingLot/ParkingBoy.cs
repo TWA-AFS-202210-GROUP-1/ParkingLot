@@ -37,17 +37,37 @@ namespace ParkingLot
 
         public Ticket ParkingCar(Car car, ParkingLotClass parkingLot)
         {
-            Ticket hadBeenParkedCarTicket = new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
-            hadBeenParkedCarTicket.HasBeenUsed = false;
-            hadBeenParkedCarTicketList.Add(hadBeenParkedCarTicket);
-            return hadBeenParkedCarTicket;
+            // need extract a method here about if else
+            if (parkingLot.ParkinguLotCapacity > 0)
+            {
+                Ticket hadBeenParkedCarTicket = new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
+                hadBeenParkedCarTicket.HasBeenUsed = false;
+                hadBeenParkedCarTicketList.Add(hadBeenParkedCarTicket);
+                parkingLot.ParkinguLotCapacity--;
+                return hadBeenParkedCarTicket;
+            }
+            else
+            {
+                throw new ArgumentException("Parking lot is undercapacity, can't parking car.");
+            }
         }
 
         public List<Ticket> ParkingCar(List<Car> carList, ParkingLotClass parkingLot)
         {
             foreach (Car car in carList)
             {
-                hadBeenParkedCarTicketList.Add(new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName));
+                // need extract a method here about if else
+                if (parkingLot.ParkinguLotCapacity > 0)
+                {
+                    Ticket hadBeenParkedCarTicket = new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
+                    hadBeenParkedCarTicket.HasBeenUsed = false;
+                    hadBeenParkedCarTicketList.Add(hadBeenParkedCarTicket);
+                    parkingLot.ParkinguLotCapacity--;
+                }
+                else
+                {
+                    throw new ArgumentException("Parking lot is undercapacity, can't parking car.");
+                }
             }
 
             return hadBeenParkedCarTicketList;

@@ -2,7 +2,9 @@ namespace ParkingLotTest
 {
     using DeepEqual.Syntax;
     using ParkingLot;
+    using System;
     using System.Collections.Generic;
+    using System.Net.Sockets;
     using Xunit;
 
     public class ParkingCarTest
@@ -36,11 +38,17 @@ namespace ParkingLotTest
             };
             ParkingLotClass parkingLot = new ParkingLotClass(parkingLotName: "Lot1");
             ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
+            Ticket ticketForTom = new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1");
+            ticketForTom.HasBeenUsed = false;
+            Ticket ticketForJim = new Ticket(carId: "Jim", parkingLotId: "Lot1", parkingBoyId: "boy1");
+            ticketForJim.HasBeenUsed = false;
+            Ticket ticketForAlice = new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "boy1");
+            ticketForAlice.HasBeenUsed = false;
             var exceptedResult = new List<Ticket>()
             {
-                new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1"),
-                new Ticket(carId: "Jim", parkingLotId: "Lot1", parkingBoyId: "boy1"),
-                new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "boy1"),
+                ticketForTom,
+                ticketForJim,
+                ticketForAlice,
             };
 
             //when
@@ -48,6 +56,27 @@ namespace ParkingLotTest
 
             //then
             parkingResult.ShouldDeepEqual(exceptedResult);
+        }
+
+        [Fact]
+        public void Should_throw_exception_When_parking_car_Given_car_and_undercapacity_parking_lot()
+        {
+            //given
+            List<Car> carlist = new List<Car>()
+            {
+                new Car(ownerName: "Tom"),
+                new Car(ownerName: "Jim"),
+                new Car(ownerName: "Alice"),
+            };
+            ParkingLotClass parkingLot = new ParkingLotClass(parkingLotName: "Lot1");
+            ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
+            parkingBoy.ParkingCar(carlist, parkingLot);
+            Car extraCar = new Car(ownerName: "extra person");
+
+            //when
+            //then
+            var ex = Assert.Throws<ArgumentException>(() => parkingBoy.ParkingCar(extraCar, parkingLot));
+            Assert.Equal("Parking lot is undercapacity, can't parking car.", ex.Message);
         }
     }
 }
