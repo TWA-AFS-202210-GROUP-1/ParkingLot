@@ -7,26 +7,41 @@ namespace ParkingLot
     public class ParkingBoy
     {
         private string parkingBoyName;
+        private List<Ticket> hadBeenParkedCarTicketList;
 
         public ParkingBoy(string parkingBoyName)
         {
             this.parkingBoyName = parkingBoyName;
+            this.hadBeenParkedCarTicketList = new List<Ticket>();
+        }
+
+        public Car FetchingCar(Ticket ticket)
+        {
+            if (hadBeenParkedCarTicketList.Contains(ticket))
+            {
+                return new Car(ticket.CarId);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid Ticket");
+            }
         }
 
         public Ticket ParkingCar(Car car, ParkingLotClass parkingLot)
         {
-            return new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
+            Ticket hadBeenParkedCarTicket = new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
+            hadBeenParkedCarTicketList.Add(hadBeenParkedCarTicket);
+            return hadBeenParkedCarTicket;
         }
 
         public List<Ticket> ParkingCar(List<Car> carList, ParkingLotClass parkingLot)
         {
-            List<Ticket> ticketList = new List<Ticket>();
             foreach (Car car in carList)
             {
-                ticketList.Add(new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName));
+                hadBeenParkedCarTicketList.Add(new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName));
             }
 
-            return ticketList;
+            return hadBeenParkedCarTicketList;
         }
     }
 }
