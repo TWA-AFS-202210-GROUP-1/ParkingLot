@@ -23,7 +23,7 @@ namespace ParkingLot
             }
             else
             {
-                throw new InvalidOperationException("Invalid Ticket");
+                throw new ArgumentException("Invalid Ticket, can't fetch car.");
             }
         }
 
