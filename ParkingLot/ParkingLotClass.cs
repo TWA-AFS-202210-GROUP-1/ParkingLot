@@ -16,7 +16,7 @@
             get { return parkingLotName; }
         }
 
-        public int ParkinguLotCapacity
+        public int ParkingLotCapacity
         {
             get { return parkinguLotCapacity; }
             set { parkinguLotCapacity = value; }
