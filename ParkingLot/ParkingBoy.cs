@@ -22,9 +22,24 @@ namespace ParkingLot
             return ticket;
         }
 
+        public List<Ticket> HelpParkCar(List<string> carsList)
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            this.ticketNumGenerator = new TicketNumGenerator();
+            foreach (string car in carsList)
+            {
+                Ticket ticket = new Ticket(car, ticketNumGenerator);
+                this.TicketsList.Add(ticket);
+                tickets.Add(ticket);
+            }
+
+            return tickets;
+        }
+
         public bool HelpFetchCar(Ticket ticket)
         {
-            return ticketsList.Contains(ticket);
+            var isContainThisCar = ticketsList.Contains(ticket);
+            return isContainThisCar;
         }
     }
 }

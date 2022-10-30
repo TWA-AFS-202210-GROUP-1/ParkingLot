@@ -2,6 +2,8 @@ namespace ParkingLotTest
 {
     using Moq;
     using ParkingLot;
+    using System.Collections.Generic;
+    using System.Linq;
     using Xunit;
 
     public class ParkinBoyTest
@@ -34,6 +36,21 @@ namespace ParkingLotTest
             var res = customer.FetchCar(ticket, parkingBoy);
             //then
             Assert.True(res);
+        }
+
+        [Fact]
+        public void Should_return_tickets_when_parking_cars_given_cars()
+        {
+            //given
+            ParkingBoy parkingBoy = new ParkingBoy();
+            List<string> carsNums = new List<string>() { "11", "12", "13" };
+            //when
+            List<Ticket> tickets = parkingBoy.HelpParkCar(carsNums);
+            //then
+            Assert.Equal(3, tickets.Count);
+            Assert.Equal("11", tickets[0].CarNum);
+            Assert.Equal("12", tickets[1].CarNum);
+            Assert.Equal("13", tickets[2].CarNum);
         }
     }
 }
