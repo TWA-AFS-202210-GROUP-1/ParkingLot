@@ -419,5 +419,30 @@ namespace ParkingLotTest
       Assert.Equal("Not enough position.", response.ShowErrorMessage());
       Assert.Null(response.ShowTicket());
     }
+
+    [Fact]
+    public void Should_return_right_cars_when_fetch_car_given_corresponding_tickets_with_different_parking_lots()
+    {
+      // given
+      var parkingLots = new List<ParkingLot>
+      {
+        new ParkingLot(1),
+        new ParkingLot(2),
+      };
+      var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Blue Sedan"),
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      var tickets = parkingBoy.Park(cars).ShowTickets();
+      var parkedCars = cars.Take(tickets.Count).ToList();
+      // when
+      var fetchedCars = tickets.Select(ticket => parkingBoy.FetchCar(ticket).ShowCar()).ToList();
+      // then
+      Assert.Equal(parkedCars, fetchedCars);
+    }
   }
 }

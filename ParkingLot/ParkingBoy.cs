@@ -61,12 +61,16 @@ namespace ParkingLot
         var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
         var fetchingStatus = parkingLot.RemoveCar(fetchedCar);
         response = new Response(fetchedCar, ticket, fetchingStatus);
+        if (fetchedCar != null)
+        {
+          break;
+        }
       }
 
       return response;
     }
 
-    private ParkingLot ChooseParkingLot(List<ParkingLot> parkingLots)
+    private static ParkingLot ChooseParkingLot(List<ParkingLot> parkingLots)
     {
       var chosenParkingLot = parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0).ToList();
 
