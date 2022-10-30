@@ -1,6 +1,7 @@
 ﻿namespace ParkingLot
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class ParkingBoy
@@ -24,13 +25,36 @@
             }
         }
 
-        public Ticket Checkin(Car car)
+        public void Checkin(Car car)
         {
-            Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
-            myparkinglot.Ticketnumber++;
-            myparkinglot.Currentcarnum++;
-            myparkinglot.Parkingspace[0] = ticket.Number;
-            return ticket;
+            if (myparkinglot.Currentcarnum < myparkinglot.Capacity)
+            {
+                Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
+                myparkinglot.Ticketnumber++;
+                myparkinglot.Currentcarnum++;
+                for (int i = 0; i < myparkinglot.Parkingspace.Count; i++)
+                {
+                    if (myparkinglot.Parkingspace[i] == 0)
+                    {
+                        myparkinglot.Parkingspace[i] = ticket.Number;
+                        car.Parking(ticket, 1);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
+                ticket.Status = -1;
+            }
+        }
+
+        public void Checkin(List<Car> cars)
+        {
+            foreach (Car car in cars)
+            {
+                Checkin(car);
+            }
         }
 
         public Car Checkout(Ticket ticket)
@@ -40,8 +64,11 @@
                 if (ticket.Number == myparkinglot.Parkingspace[i])
                 {
                     myparkinglot.Parkingspace[i] = 0;
+                    myparkinglot.Currentcarnum--;
+                    Car car = ticket.Correspondingcar;
+                    car.Parkingstatus = 0;
                     ticket.Status = 0;
-                    return ticket.Correspondingcar;
+                    return car;
                 }
             }
 

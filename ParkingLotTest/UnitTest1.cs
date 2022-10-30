@@ -4,6 +4,7 @@ namespace ParkingLotTest
     using System.Collections.Generic;
     using System;
     using Xunit;
+    using System.Linq;
 
     public class UnitTest1
     {
@@ -14,11 +15,32 @@ namespace ParkingLotTest
             ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
             Car car = new Car();
 
-            Ticket ticket = parkingboy.Checkin(car);
+            parkingboy.Checkin(car);
+
+            Ticket ticket = car.Myticket;
 
             Car car_get = parkingboy.Checkout(ticket);
 
             Assert.Equal(car, car_get);
+        }
+
+        [Fact]
+        public void Should_park_multiple_when_multiple_cars_if_given_multiple_cars()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            List<Car> cars = new List<Car>();
+
+            cars.Add(new Car());
+            cars.Add(new Car());
+
+            parkingboy.Checkin(cars);
+
+            Ticket ticket = cars[0].Myticket;
+
+            Car car_get = parkingboy.Checkout(ticket);
+
+            Assert.Equal(cars[0], car_get);
         }
     }
 }

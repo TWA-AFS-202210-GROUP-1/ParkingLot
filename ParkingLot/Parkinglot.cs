@@ -62,5 +62,18 @@
                 ticketnumber = value;
             }
         }
+
+        public int Capacity
+        {
+            get
+            {
+                return capacity;
+            }
+
+            set
+            {
+                capacity = value;
+            }
+        }
     }
 }
