@@ -46,7 +46,7 @@ namespace ParkingLot
             }
             else
             {
-                throw new ArgumentException("Parking lot is undercapacity, can't parking car.");
+                throw new ArgumentException("Not enough position.");
             }
         }
 

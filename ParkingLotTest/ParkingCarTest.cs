@@ -76,7 +76,7 @@ namespace ParkingLotTest
             //when
             //then
             var ex = Assert.Throws<ArgumentException>(() => parkingBoy.ParkingCar(extraCar, parkingLot));
-            Assert.Equal("Parking lot is undercapacity, can't parking car.", ex.Message);
+            Assert.Equal("Not enough position.", ex.Message);
         }
     }
 }
