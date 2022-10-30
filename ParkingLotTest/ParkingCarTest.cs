@@ -119,5 +119,46 @@ namespace ParkingLotTest
             //then
             parkingResult.ShouldDeepEqual(exceptedResult);
         }
+
+        [Fact]
+        public void Should_smart_parking_When_parking_car_Given_smart_boy_multi_car_and_multi_parking_lot()
+        {
+            //given
+            List<Car> carlist = new List<Car>()
+            {
+                new Car(ownerName: "Tom"),
+                new Car(ownerName: "Jim"),
+                new Car(ownerName: "Alice"),
+                new Car(ownerName: "Ana"),
+            };
+            List<ParkingLotClass> parkingLotlist = new List<ParkingLotClass>()
+            {
+                new ParkingLotClass(parkingLotName: "Lot1"),
+                new ParkingLotClass(parkingLotName: "Lot2"),
+            };
+            SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingBoyName: "smart boy");
+
+            Ticket ticketForTom = new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "smart boy");
+            ticketForTom.HasBeenUsed = false;
+            Ticket ticketForJim = new Ticket(carId: "Jim", parkingLotId: "Lot2", parkingBoyId: "smart boy");
+            ticketForJim.HasBeenUsed = false;
+            Ticket ticketForAlice = new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "smart boy");
+            ticketForAlice.HasBeenUsed = false;
+            Ticket ticketForAna = new Ticket(carId: "Ana", parkingLotId: "Lot2", parkingBoyId: "smart boy");
+            ticketForAna.HasBeenUsed = false;
+            var exceptedResult = new List<Ticket>()
+            {
+                ticketForTom,
+                ticketForJim,
+                ticketForAlice,
+                ticketForAna,
+            };
+
+            //when
+            var parkingResult = smartParkingBoy.ParkingCar(carlist, parkingLotlist);
+
+            //then
+            parkingResult.ShouldDeepEqual(exceptedResult);
+        }
     }
 }

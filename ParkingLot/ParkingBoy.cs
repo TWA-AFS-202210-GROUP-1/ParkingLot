@@ -16,6 +16,10 @@ namespace ParkingLot
             this.hadBeenParkedCarTicketList = new List<Ticket>();
         }
 
+        public ParkingBoy()
+        {
+        }
+
         public Car FetchingCar(Ticket ticket)
         {
             if (hadBeenParkedCarTicketList.Contains(ticket) && ticket.HasBeenUsed == false)
