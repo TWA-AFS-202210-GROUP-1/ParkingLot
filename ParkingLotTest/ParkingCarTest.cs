@@ -1,6 +1,8 @@
 namespace ParkingLotTest
 {
+    using DeepEqual.Syntax;
     using ParkingLot;
+    using System.Collections.Generic;
     using Xunit;
 
     public class ParkingCarTest
@@ -18,9 +20,33 @@ namespace ParkingLotTest
             var parkingResult = parkingBoy.ParkingCar(car, parkingLot);
 
             //then
-            Assert.Equal(exceptedResult.CarId, parkingResult.CarId);
-            Assert.Equal(exceptedResult.ParkingLotId, parkingResult.ParkingLotId);
-            Assert.Equal(exceptedResult.ParkingBoyId, parkingResult.ParkingBoyId);
+            parkingResult.ShouldDeepEqual(exceptedResult);
+        }
+
+        [Fact]
+        public void Should_return_multi_ticket_object_When_parking_car_Given_multi_car_and_parking_lot()
+        {
+            //given
+            List<Car> carlist = new List<Car>()
+            {
+                new Car(ownerName: "Tom"),
+                new Car(ownerName: "Jim"),
+                new Car(ownerName: "Alice"),
+            };
+            ParkingLotClass parkingLot = new ParkingLotClass(parkingLotName: "Lot1");
+            ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
+            var exceptedResult = new List<Ticket>()
+            {
+                new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1"),
+                new Ticket(carId: "Jim", parkingLotId: "Lot1", parkingBoyId: "boy1"),
+                new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "boy1"),
+            };
+
+            //when
+            var parkingResult = parkingBoy.ParkingCar(carlist, parkingLot);
+
+            //then
+            parkingResult.ShouldDeepEqual(exceptedResult);
         }
     }
 }
