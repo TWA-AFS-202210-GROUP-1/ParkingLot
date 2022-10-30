@@ -29,30 +29,24 @@ namespace ParkingLot
     public Response Park(List<Car> cars)
     {
       var tickets = new List<Ticket>();
-      OperationStatus parkingStatus = OperationStatus.ParkingSuccessful;
-      foreach (var parkingLot in parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0))
+      OperationStatus parkingStatus = OperationStatus.ParkingFailed;
+      foreach (var car in cars)
       {
-        foreach (var car in cars)
+        var parkingLot = ChooseParkingLot(parkingLots);
+        if (parkingLot != null)
         {
-          var operationStatus = parkingLot.AddCar(car);
-          if (operationStatus == OperationStatus.ParkingSuccessful)
-          {
-            parkingStatus = operationStatus;
-            tickets.Add(new Ticket(car, parkingLot));
-          }
-          else if (operationStatus == OperationStatus.NoVacancy)
-          {
-            parkingStatus = operationStatus;
-            break;
-          }
-          else
-          {
-            parkingStatus = OperationStatus.ParkingFailed;
-            break;
-          }
+          parkingStatus = parkingLot.AddCar(car);
+        }
+        else
+        {
+          parkingStatus = OperationStatus.NoVacancy;
+          break;
         }
 
-        break;
+        if (parkingStatus == OperationStatus.ParkingSuccessful)
+        {
+          tickets.Add(new Ticket(car, parkingLot));
+        }
       }
 
       var parkedCars = cars.Take(tickets.Count).ToList();
@@ -70,6 +64,13 @@ namespace ParkingLot
       }
 
       return response;
+    }
+
+    private ParkingLot ChooseParkingLot(List<ParkingLot> parkingLots)
+    {
+      var chosenParkingLot = parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0).ToList();
+
+      return chosenParkingLot.Any() ? chosenParkingLot.First() : null;
     }
   }
 }

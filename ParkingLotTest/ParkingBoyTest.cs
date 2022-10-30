@@ -318,5 +318,33 @@ namespace ParkingLotTest
       // then
       Assert.Equal(parkingLots[1].Id, ticket.ParkingLot.Id);
     }
+
+    [Fact]
+    public void Should_return_tickets_of_different_parking_lots_when_park_given_partially_filled_first_parking_lot()
+    {
+      // given
+      var parkingLots = new List<ParkingLot>
+      {
+        new ParkingLot(3),
+        new ParkingLot(3),
+      };
+      var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Blue Sedan"),
+        new Car("Black Jeep"),
+      };
+      parkingBoy.Park(cars);
+      var newCars = new List<Car>
+      {
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      // when
+      var tickets = parkingBoy.Park(newCars).ShowTickets();
+      // then
+      Assert.Equal(parkingLots[0].Id, tickets[0].ParkingLot.Id);
+      Assert.Equal(parkingLots[1].Id, tickets[1].ParkingLot.Id);
+    }
   }
 }
