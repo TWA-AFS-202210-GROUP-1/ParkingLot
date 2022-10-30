@@ -39,7 +39,7 @@
             }
         }
 
-        public void Checkin(Car car)
+        public virtual void Checkin(Car car)
         {
             Ticket ticket = new Ticket(car: car, number: parkingproperty.Ticketnumber);
             foreach (Parkinglot parkinglot in this.parkingproperty.Parkinglots)

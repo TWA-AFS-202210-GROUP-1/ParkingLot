@@ -190,5 +190,36 @@ namespace ParkingLotTest
 
             Assert.Equal(should, parkinglot2.Parkingspace);
         }
+
+        [Fact]
+        public void Should_park_to_the_most_empty_parkinglot_when_notfull_if_given_multiple_lots_and_a_smartguy()
+        {
+            Parkinglot parkinglot1 = new Parkinglot(name: "myp", capacity: 5);
+            Parkinglot parkinglot2 = new Parkinglot(name: "myp", capacity: 8);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoysmart(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot1);
+            parkingproperty.Addparkinglot(parkinglot2);
+            Car car1 = new Car();
+
+            parkingboy.Checkin(car1);
+
+            Car car2 = new Car();
+
+            parkingboy.Checkin(car2);
+
+            Car car3 = new Car();
+
+            parkingboy.Checkin(car3);
+
+            Car car4 = new Car();
+
+            parkingboy.Checkin(car4);
+
+            List<int> should = new List<int> { 4, 0, 0, 0, 0 };
+
+            Assert.Equal(should, parkinglot1.Parkingspace);
+        }
     }
 }
