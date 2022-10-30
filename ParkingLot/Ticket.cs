@@ -9,12 +9,12 @@ namespace ParkingLot
         private string parkingBoyId;
         private bool hasBeenUsed;
 
-        public Ticket(string carId, string parkingLotId, string parkingBoyId)
+        public Ticket(string carId, string parkingLotId, string parkingBoyId, bool hasBeenUsed = true)
         {
             this.carId = carId;
             this.parkingLotId = parkingLotId;
             this.parkingBoyId = parkingBoyId;
-            this.hasBeenUsed = true;
+            this.hasBeenUsed = hasBeenUsed;
         }
 
         public string CarId

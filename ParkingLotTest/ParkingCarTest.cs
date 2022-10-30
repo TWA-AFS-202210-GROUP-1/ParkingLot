@@ -97,20 +97,12 @@ namespace ParkingLotTest
             };
             ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
 
-            Ticket ticketForTom = new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1");
-            ticketForTom.HasBeenUsed = false;
-            Ticket ticketForJim = new Ticket(carId: "Jim", parkingLotId: "Lot1", parkingBoyId: "boy1");
-            ticketForJim.HasBeenUsed = false;
-            Ticket ticketForAlice = new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "boy1");
-            ticketForAlice.HasBeenUsed = false;
-            Ticket ticketForAna = new Ticket(carId: "Ana", parkingLotId: "Lot2", parkingBoyId: "boy1");
-            ticketForAna.HasBeenUsed = false;
             var exceptedResult = new List<Ticket>()
             {
-                ticketForTom,
-                ticketForJim,
-                ticketForAlice,
-                ticketForAna,
+                new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1", hasBeenUsed: false),
+                new Ticket(carId: "Jim", parkingLotId: "Lot1", parkingBoyId: "boy1", hasBeenUsed: false),
+                new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "boy1", hasBeenUsed: false),
+                new Ticket(carId: "Ana", parkingLotId: "Lot2", parkingBoyId: "boy1", hasBeenUsed: false),
             };
 
             //when
@@ -138,20 +130,12 @@ namespace ParkingLotTest
             };
             SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingBoyName: "smart boy");
 
-            Ticket ticketForTom = new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "smart boy");
-            ticketForTom.HasBeenUsed = false;
-            Ticket ticketForJim = new Ticket(carId: "Jim", parkingLotId: "Lot2", parkingBoyId: "smart boy");
-            ticketForJim.HasBeenUsed = false;
-            Ticket ticketForAlice = new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "smart boy");
-            ticketForAlice.HasBeenUsed = false;
-            Ticket ticketForAna = new Ticket(carId: "Ana", parkingLotId: "Lot2", parkingBoyId: "smart boy");
-            ticketForAna.HasBeenUsed = false;
             var exceptedResult = new List<Ticket>()
             {
-                ticketForTom,
-                ticketForJim,
-                ticketForAlice,
-                ticketForAna,
+                new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "smart boy", hasBeenUsed: false),
+                new Ticket(carId: "Jim", parkingLotId: "Lot2", parkingBoyId: "smart boy", hasBeenUsed: false),
+                new Ticket(carId: "Alice", parkingLotId: "Lot1", parkingBoyId: "smart boy", hasBeenUsed: false),
+                new Ticket(carId: "Ana", parkingLotId: "Lot2", parkingBoyId: "smart boy", hasBeenUsed: false),
             };
 
             //when
