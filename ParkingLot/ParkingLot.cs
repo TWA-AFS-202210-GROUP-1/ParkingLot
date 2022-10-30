@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ParkingLot
 {
@@ -6,10 +7,12 @@ namespace ParkingLot
   {
     public ParkingLot(int capacity = 10)
     {
+      Id = Guid.NewGuid();
       Capacity = capacity;
       EmptySlots = Capacity;
     }
 
+    public Guid Id { get; private set; }
     public List<Car> ParkedCars { get; private set; } = new List<Car>();
     public int Capacity { get; private set; }
     public int EmptySlots { get; private set; }

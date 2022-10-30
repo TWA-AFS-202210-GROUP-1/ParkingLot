@@ -5,17 +5,23 @@ namespace ParkingLot
 {
   public class ParkingBoy
   {
-    private readonly ParkingLot parkingLot;
+    private readonly List<ParkingLot> parkingLots;
 
-    public ParkingBoy(ParkingLot parkingLot)
+    public ParkingBoy(List<ParkingLot> parkingLots)
     {
-      this.parkingLot = parkingLot;
+      this.parkingLots = parkingLots;
     }
 
     public Response Park(Car car)
     {
-      var parkingStatus = parkingLot.AddCar(car);
-      var parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car) : null;
+      var parkingStatus = OperationStatus.NoVacancy;
+      Ticket parkingTicket = null;
+      foreach (var parkingLot in parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0))
+      {
+        parkingStatus = parkingLot.AddCar(car);
+        parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car, parkingLot) : null;
+        break;
+      }
 
       return new Response(car, parkingTicket, parkingStatus);
     }
@@ -24,24 +30,29 @@ namespace ParkingLot
     {
       var tickets = new List<Ticket>();
       OperationStatus parkingStatus = OperationStatus.ParkingSuccessful;
-      foreach (var car in cars)
+      foreach (var parkingLot in parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0))
       {
-        var operationStatus = parkingLot.AddCar(car);
-        if (operationStatus == OperationStatus.ParkingSuccessful)
+        foreach (var car in cars)
         {
-          parkingStatus = operationStatus;
-          tickets.Add(new Ticket(car));
+          var operationStatus = parkingLot.AddCar(car);
+          if (operationStatus == OperationStatus.ParkingSuccessful)
+          {
+            parkingStatus = operationStatus;
+            tickets.Add(new Ticket(car, parkingLot));
+          }
+          else if (operationStatus == OperationStatus.NoVacancy)
+          {
+            parkingStatus = operationStatus;
+            break;
+          }
+          else
+          {
+            parkingStatus = OperationStatus.ParkingFailed;
+            break;
+          }
         }
-        else if (operationStatus == OperationStatus.NoVacancy)
-        {
-          parkingStatus = operationStatus;
-          break;
-        }
-        else
-        {
-          parkingStatus = OperationStatus.ParkingFailed;
-          break;
-        }
+
+        break;
       }
 
       var parkedCars = cars.Take(tickets.Count).ToList();
@@ -50,9 +61,13 @@ namespace ParkingLot
 
     public Response FetchCar(Ticket ticket)
     {
-      var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
-      var fetchingStatus = parkingLot.RemoveCar(fetchedCar);
-      var response = new Response(fetchedCar, ticket, fetchingStatus);
+      var response = new Response(null, ticket, OperationStatus.RemovingFailed);
+      foreach (var parkingLot in parkingLots)
+      {
+        var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
+        var fetchingStatus = parkingLot.RemoveCar(fetchedCar);
+        response = new Response(fetchedCar, ticket, fetchingStatus);
+      }
 
       return response;
     }
