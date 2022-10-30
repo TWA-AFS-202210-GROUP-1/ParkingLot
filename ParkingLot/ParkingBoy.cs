@@ -36,9 +36,19 @@ namespace ParkingLot
             return tickets;
         }
 
+        public bool HelpFetchCar()
+        {
+             return false;
+        }
+
         public bool HelpFetchCar(Ticket ticket)
         {
             var isContainThisCar = ticketsList.Contains(ticket);
+            if (isContainThisCar)
+            {
+                ticketsList.Remove(ticket);
+            }
+
             return isContainThisCar;
         }
     }

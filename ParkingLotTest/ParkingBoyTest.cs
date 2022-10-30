@@ -14,13 +14,10 @@ namespace ParkingLotTest
             //given
             ParkingBoy parkingBoy = new ParkingBoy();
             Customer customer = new Customer("1234");
-            //var mockTicketNumGenerator = new Mock<TicketNumGenerator>();
-            //mockTicketNumGenerator.Setup(t => t.GenerateTicketNum()).Returns("1234");
             Ticket expectTicket = new Ticket() { CarNum = "1234", TicketNum = "1234" };
             //when
             Ticket ticket = customer.ParkCar(customer.CarNum, parkingBoy);
             //then
-            //Assert.Equal(expectTicket.TicketNum, ticket.TicketNum);
             Assert.Equal(expectTicket.CarNum, ticket.CarNum);
             Assert.Equal(expectTicket.CarNum, parkingBoy.TicketsList[0].CarNum);
         }
@@ -51,6 +48,27 @@ namespace ParkingLotTest
             Assert.Equal("11", tickets[0].CarNum);
             Assert.Equal("12", tickets[1].CarNum);
             Assert.Equal("13", tickets[2].CarNum);
+        }
+
+        [Fact]
+        public void Should_not_return_tickets_when_fetching_cars_given_wrong_ticket_or_no_ticket()
+        {
+            //given
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.TicketsList = new List<Ticket>() { new Ticket { CarNum = "1234", TicketNum = "1234" }, new Ticket { CarNum = "1233", TicketNum = "1233" } };
+            //when
+            bool resOfNoTicket = parkingBoy.HelpFetchCar();
+            //then
+            Assert.False(resOfNoTicket);
+            //when
+            bool resOfWrongTicket = parkingBoy.HelpFetchCar(new Ticket
+            {
+                CarNum = "111",
+                TicketNum = "111"
+            });
+            //then
+            Assert.False(resOfWrongTicket);
+            Assert.Equal(2, parkingBoy.TicketsList.Count);
         }
     }
 }
