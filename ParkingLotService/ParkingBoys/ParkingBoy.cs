@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ParkingLotService.ParkingBoys;
 
-public class ParkingBoy
+public class ParkingBoy : IParkingBoy
 {
     public string Name { get; }
     protected List<ParkingLot> ManagingLots { get; set; }
