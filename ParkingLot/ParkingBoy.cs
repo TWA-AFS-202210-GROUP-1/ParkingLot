@@ -17,21 +17,14 @@ namespace ParkingLot
 
         public Car FetchingCar(Ticket ticket)
         {
-            if (hadBeenParkedCarTicketList.Contains(ticket))
+            if (hadBeenParkedCarTicketList.Contains(ticket) && ticket.HasBeenUsed == false)
             {
-                if (ticket.HasBeenUsed == false)
-                {
                     ticket.HasBeenUsed = true;
                     return new Car(ticket.CarId);
-                }
-                else
-                {
-                    throw new ArgumentException("Ticket has already been used, can't fetch car.");
-                }
             }
             else
             {
-                throw new ArgumentException("Invalid Ticket, can't fetch car.");
+                throw new ArgumentException("Unrecognized parking ticket.");
             }
         }
 

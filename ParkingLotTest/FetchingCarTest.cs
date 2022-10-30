@@ -39,7 +39,7 @@
             //when
             //then
             var ex = Assert.Throws<ArgumentException>(() => parkingBoy.FetchingCar(ticket));
-            Assert.Equal("Invalid Ticket, can't fetch car.", ex.Message);
+            Assert.Equal("Unrecognized parking ticket.", ex.Message);
         }
 
         [Fact]
@@ -55,7 +55,7 @@
             //when
             //then
             var ex = Assert.Throws<ArgumentException>(() => parkingBoy.FetchingCar(ticket));
-            Assert.Equal("Ticket has already been used, can't fetch car.", ex.Message);
+            Assert.Equal("Unrecognized parking ticket.", ex.Message);
         }
     }
 }
