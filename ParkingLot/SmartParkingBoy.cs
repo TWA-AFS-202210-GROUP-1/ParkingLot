@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace ParkingLot
 {
-  public class ParkingBoy
+  public class SmartParkingBoy : ParkingBoy
   {
     private readonly List<ParkingLot> parkingLots;
     private ParkingLot chosenParkingLot;
 
-    public ParkingBoy(List<ParkingLot> parkingLots)
+    public SmartParkingBoy(List<ParkingLot> parkingLots) : base(parkingLots)
     {
       this.parkingLots = parkingLots;
       chosenParkingLot = parkingLots.First();
     }
 
-    public virtual Response Park(Car car)
+    public override Response Park(Car car)
     {
       chosenParkingLot = ChooseParkingLot(parkingLots);
       var parkingStatus = OperationStatus.NoVacancy;
@@ -22,13 +22,15 @@ namespace ParkingLot
       if (chosenParkingLot != null)
       {
         parkingStatus = chosenParkingLot.AddCar(car);
-        parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car, chosenParkingLot) : null;
+        parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful
+                      ? new Ticket(car, chosenParkingLot)
+                      : null;
       }
 
       return new Response(car, parkingTicket, parkingStatus);
     }
 
-    public virtual Response Park(List<Car> cars)
+    public override Response Park(List<Car> cars)
     {
       var tickets = new List<Ticket>();
       OperationStatus parkingStatus = OperationStatus.ParkingFailed;
@@ -55,28 +57,13 @@ namespace ParkingLot
       return new Response(parkedCars, tickets, parkingStatus);
     }
 
-    public Response FetchCar(Ticket ticket)
-    {
-      var response = new Response(null, ticket, OperationStatus.RemovingFailed);
-      foreach (var parkingLot in parkingLots)
-      {
-        var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
-        var fetchingStatus = parkingLot.RemoveCar(fetchedCar);
-        response = new Response(fetchedCar, ticket, fetchingStatus);
-        if (fetchedCar != null)
-        {
-          break;
-        }
-      }
-
-      return response;
-    }
-
     private static ParkingLot ChooseParkingLot(List<ParkingLot> parkingLots)
     {
       var chosenParkingLot = parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0).ToList();
 
-      return chosenParkingLot.Any() ? chosenParkingLot.First() : null;
+      return chosenParkingLot.Any()
+           ? chosenParkingLot.OrderByDescending(parkingLot => parkingLot.EmptySlots).First()
+           : null;
     }
   }
 }
