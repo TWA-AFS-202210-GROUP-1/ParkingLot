@@ -8,14 +8,14 @@
         private string name;
         private int capacity;
         private int currentcarnum;
-        private int ticketnumber;
+        //private int ticketnumber;
         private List<int> parkingspace;
 
         public Parkinglot(string name, int capacity)
         {
             this.name = name;
             this.capacity = capacity;
-            this.ticketnumber = 1;
+            //this.ticketnumber = 1;
             this.currentcarnum = 0;
             this.parkingspace = new List<int>(new int[capacity]);
             for (int i = 0; i < capacity; i++)
@@ -50,18 +50,18 @@
             }
         }
 
-        public int Ticketnumber
-        {
-            get
-            {
-                return ticketnumber;
-            }
-
-            set
-            {
-                ticketnumber = value;
-            }
-        }
+        //public int Ticketnumber
+        //{
+        //    get
+        //    {
+        //        return ticketnumber;
+        //    }
+        //
+        //    set
+        //   {
+        //        ticketnumber = value;
+        //    }
+        //}
 
         public int Capacity
         {

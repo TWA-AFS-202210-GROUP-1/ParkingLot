@@ -11,8 +11,12 @@ namespace ParkingLotTest
         [Fact]
         public void Should_get_ticket_when_park_at_parkinglot_if_given_a_car()
         {
-            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            var parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
+
             Car car = new Car();
 
             parkingboy.Checkin(car);
@@ -28,7 +32,10 @@ namespace ParkingLotTest
         public void Should_park_multiple_when_multiple_cars_if_given_multiple_cars()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             List<Car> cars = new List<Car>();
 
             cars.Add(new Car());
@@ -47,7 +54,10 @@ namespace ParkingLotTest
         public void Should_get_no_car_when_ticket_wrong_if_given_a_wrong_ticket()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             Car car = new Car();
 
             parkingboy.Checkin(car);
@@ -63,7 +73,10 @@ namespace ParkingLotTest
         public void Should_get_no_car_when_ticket_used_if_given_a_used_ticket()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             Car car = new Car();
 
             parkingboy.Checkin(car);
@@ -81,7 +94,10 @@ namespace ParkingLotTest
         public void Should_get_no_ticket_when_no_capacity_if_given_a_car()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 2);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             List<Car> cars = new List<Car>();
 
             cars.Add(new Car());
@@ -101,7 +117,10 @@ namespace ParkingLotTest
         public void Should_get_Unrecognized_parking_ticket_when_ticket_if_wrong()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             Car car = new Car();
 
             parkingboy.Checkin(car);
@@ -117,7 +136,10 @@ namespace ParkingLotTest
         public void Should_get_Please_provide_your_parking_ticket_when_ticket_if_no()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             Car car = new Car();
 
             parkingboy.Checkin(car);
@@ -131,12 +153,42 @@ namespace ParkingLotTest
         public void Should_get_Not_enough_position_when_parkinglot_if_full()
         {
             Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 0);
-            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot);
             Car car = new Car();
 
             parkingboy.Checkin(car);
 
             Assert.Equal("Not enough position.", parkingboy.Personalizedmessage);
+        }
+
+        [Fact]
+        public void Should_park_to_the_next_only_if_previous_full_when_parkinglot_if_full_if_given_multiple_lots()
+        {
+            Parkinglot parkinglot1 = new Parkinglot(name: "myp", capacity: 2);
+            Parkinglot parkinglot2 = new Parkinglot(name: "myp", capacity: 10);
+            ParkingProperty parkingproperty = new ParkingProperty(name: "dude");
+            var parkingboy = new ParkingBoy(parkingproperty: parkingproperty);
+            parkingproperty.Addparkingboy(parkingboy);
+            parkingproperty.Addparkinglot(parkinglot1);
+            parkingproperty.Addparkinglot(parkinglot2);
+            Car car1 = new Car();
+
+            parkingboy.Checkin(car1);
+
+            Car car2 = new Car();
+
+            parkingboy.Checkin(car2);
+
+            Car car3 = new Car();
+
+            parkingboy.Checkin(car3);
+
+            List<int> should = new List<int> { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            Assert.Equal(should, parkinglot2.Parkingspace);
         }
     }
 }

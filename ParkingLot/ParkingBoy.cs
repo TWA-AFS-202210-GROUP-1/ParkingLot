@@ -6,25 +6,28 @@
 
     public class ParkingBoy
     {
-        private Parkinglot myparkinglot;
+        private ParkingProperty parkingproperty;
         private List<string> messages;
         private string personalizedmessage;
-        public ParkingBoy(Parkinglot myparkinglot)
+        private bool taskdone;
+
+        public ParkingBoy(ParkingProperty parkingproperty)
         {
-            this.myparkinglot = myparkinglot;
+            this.parkingproperty = parkingproperty;
+            this.taskdone = false;
             this.messages = new List<string>(new string[] { "Unrecognized parking ticket.", "Please provide your parking ticket.", "Not enough position.", "All good Dude." });
         }
 
-        public Parkinglot Myparkinglot
+        public ParkingProperty Parkingproperty
         {
             get
             {
-                return myparkinglot;
+                return parkingproperty;
             }
 
             set
             {
-               myparkinglot = value;
+               parkingproperty = value;
             }
         }
 
@@ -38,28 +41,34 @@
 
         public void Checkin(Car car)
         {
-            if (myparkinglot.Currentcarnum < myparkinglot.Capacity)
+            Ticket ticket = new Ticket(car: car, number: parkingproperty.Ticketnumber);
+            foreach (Parkinglot parkinglot in this.parkingproperty.Parkinglots)
             {
-                Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
-                myparkinglot.Ticketnumber++;
-                myparkinglot.Currentcarnum++;
-                for (int i = 0; i < myparkinglot.Parkingspace.Count; i++)
+                if (taskdone is false)
                 {
-                    if (myparkinglot.Parkingspace[i] == 0)
+                    if (parkinglot.Currentcarnum < parkinglot.Capacity)
                     {
-                        myparkinglot.Parkingspace[i] = ticket.Number;
-                        car.Parking(ticket, 1);
-                        this.personalizedmessage = this.messages[3];
-                        break;
+                        parkingproperty.Ticketnumber++;
+                        parkingproperty.Currentcarnum++;
+                        parkinglot.Currentcarnum++;
+                        for (int i = 0; i < parkinglot.Parkingspace.Count; i++)
+                        {
+                            if (parkinglot.Parkingspace[i] == 0)
+                            {
+                                parkinglot.Parkingspace[i] = ticket.Number;
+                                car.Parking(ticket, 1);
+                                this.personalizedmessage = this.messages[3];
+                                taskdone = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-            else
-            {
-                Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
-                ticket.Status = -1;
-                this.personalizedmessage = this.messages[2];
-            }
+
+            taskdone = false;
+            ticket.Status = -1;
+            this.personalizedmessage = this.messages[2];
         }
 
         public void Checkin(List<Car> cars)
@@ -72,17 +81,21 @@
 
         public Car Checkout(Ticket ticket)
         {
-            for (int i = 0; i < myparkinglot.Parkingspace.Count; i++)
+            foreach (Parkinglot parkinglot in this.parkingproperty.Parkinglots)
             {
-                if (ticket.Number == myparkinglot.Parkingspace[i])
+                for (int i = 0; i < parkinglot.Parkingspace.Count; i++)
                 {
-                    myparkinglot.Parkingspace[i] = 0;
-                    myparkinglot.Currentcarnum--;
-                    Car car = ticket.Correspondingcar;
-                    car.Parkingstatus = 0;
-                    ticket.Status = 0;
-                    this.personalizedmessage = this.messages[3];
-                    return car;
+                    if (ticket.Number == parkinglot.Parkingspace[i])
+                    {
+                        parkinglot.Parkingspace[i] = 0;
+                        parkinglot.Currentcarnum--;
+                        parkingproperty.Currentcarnum--;
+                        Car car = ticket.Correspondingcar;
+                        car.Parkingstatus = 0;
+                        ticket.Status = 0;
+                        this.personalizedmessage = this.messages[3];
+                        return car;
+                    }
                 }
             }
 
