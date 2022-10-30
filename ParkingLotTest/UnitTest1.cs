@@ -76,5 +76,25 @@ namespace ParkingLotTest
 
             Assert.NotEqual(car, car_get);
         }
+
+        [Fact]
+        public void Should_get_no_ticket_when_no_capacity_if_given_a_car()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 2);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            List<Car> cars = new List<Car>();
+
+            cars.Add(new Car());
+            cars.Add(new Car());
+
+            parkingboy.Checkin(cars);
+
+            Car car = new Car();
+            parkingboy.Checkin(car);
+
+            Ticket ticket = car.Myticket;
+
+            Assert.Null(ticket);
+        }
     }
 }
