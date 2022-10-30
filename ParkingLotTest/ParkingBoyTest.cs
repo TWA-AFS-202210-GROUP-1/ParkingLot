@@ -346,5 +346,31 @@ namespace ParkingLotTest
       Assert.Equal(parkingLots[0].Id, tickets[0].ParkingLot.Id);
       Assert.Equal(parkingLots[1].Id, tickets[1].ParkingLot.Id);
     }
+
+    [Fact]
+    public void Should_return_right_tickets_when_park_multiple_cars_given_insufficient_parking_lots()
+    {
+      // given
+      var parkingLots = new List<ParkingLot>
+      {
+        new ParkingLot(1),
+        new ParkingLot(2),
+      };
+      var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Blue Sedan"),
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
+      // when
+      var tickets = parkingBoy.Park(cars).ShowTickets();
+      // then
+      Assert.Equal(3, tickets.Count);
+      Assert.Equal(parkingLots[0].Id, tickets[0].ParkingLot.Id);
+      Assert.Equal(parkingLots[1].Id, tickets[1].ParkingLot.Id);
+      Assert.Equal(parkingLots[1].Id, tickets[2].ParkingLot.Id);
+    }
   }
 }
