@@ -9,7 +9,7 @@ namespace ParkingLotServiceTest
         public void Should_return_true_when_add_car_successfully_when_given_car()
         {
             //given
-            var parkingLot = new @string("Parking Lot 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
             var car = new Car("License Number");
 
             //when
@@ -23,7 +23,7 @@ namespace ParkingLotServiceTest
         public void Should_return_car_when_pop_car_given_license_number_car_exist()
         {
             //given
-            var parkingLot = new @string("Parking Lot 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
             var car = new Car("License Number");
             parkingLot.AddCar(car);
 
@@ -39,7 +39,7 @@ namespace ParkingLotServiceTest
         public void Should_return_null_when_pop_car_given_license_number_car_not_exist()
         {
             //given
-            var parkingLot = new @string("Parking Lot 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
             var car = new Car("License Number");
             parkingLot.AddCar(car);
 
@@ -54,7 +54,7 @@ namespace ParkingLotServiceTest
         public void Should_return_false_when_add_car_given_a_full_parking_lot()
         {
             //given
-            var parkingLot = new @string("Parking Lot 01");
+            var parkingLot = new ParkingLot("Parking Lot 01");
             var car = new Car("License Number");
             for (int i = 0; i < 10; i++)
             {

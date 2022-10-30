@@ -13,9 +13,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
             parkingLot01.SeMaxCapacity(5);
-            var parkingLot02 = new @string("Parking Lot 02");
+            var parkingLot02 = new ParkingLot("Parking Lot 02");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var car = new Car("License NUmber");
@@ -25,8 +25,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
 
             //then
             Assert.NotNull(response.Content);
-            Assert.Equal(0, parkingLot01.CarNumber);
-            Assert.Equal(1, parkingLot02.CarNumber);
+            Assert.Equal(0, parkingLot01.CarCount);
+            Assert.Equal(1, parkingLot02.CarCount);
         }
 
         [Fact]
@@ -34,9 +34,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
             parkingLot01.SeMaxCapacity(5);
-            var parkingLot02 = new @string("Parking Lot 02");
+            var parkingLot02 = new ParkingLot("Parking Lot 02");
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
             var cars = new List<Car>()
@@ -54,8 +54,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
 
             //then
             Assert.Equal(6, response.Count);
-            Assert.Equal(0, parkingLot01.CarNumber);
-            Assert.Equal(6, parkingLot02.CarNumber);
+            Assert.Equal(0, parkingLot01.CarCount);
+            Assert.Equal(6, parkingLot02.CarCount);
         }
 
         [Fact]
@@ -63,9 +63,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
             parkingLot01.SeMaxCapacity(2);
-            var parkingLot02 = new @string("Parking Lot 02");
+            var parkingLot02 = new ParkingLot("Parking Lot 02");
             parkingLot02.SeMaxCapacity(4);
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
@@ -83,8 +83,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
 
             //then
             Assert.Equal(5, response.Count);
-            Assert.Equal(1, parkingLot01.CarNumber);
-            Assert.Equal(4, parkingLot02.CarNumber);
+            Assert.Equal(1, parkingLot01.CarCount);
+            Assert.Equal(4, parkingLot02.CarCount);
         }
 
         [Fact]
@@ -92,9 +92,9 @@ namespace ParkingLotServiceTest.ParkingBoyTest
         {
             //given
             var parkingBoy = new CleverParkingBoy("Parking Boy 01");
-            var parkingLot01 = new @string("Parking Lot 01");
+            var parkingLot01 = new ParkingLot("Parking Lot 01");
             parkingLot01.SeMaxCapacity(2);
-            var parkingLot02 = new @string("Parking Lot 02");
+            var parkingLot02 = new ParkingLot("Parking Lot 02");
             parkingLot02.SeMaxCapacity(4);
             parkingBoy.AssignLot(parkingLot01);
             parkingBoy.AssignLot(parkingLot02);
@@ -114,8 +114,8 @@ namespace ParkingLotServiceTest.ParkingBoyTest
 
             //then
             Assert.Equal(7, response.Count);
-            Assert.Equal(2, parkingLot01.CarNumber);
-            Assert.Equal(4, parkingLot02.CarNumber);
+            Assert.Equal(2, parkingLot01.CarCount);
+            Assert.Equal(4, parkingLot02.CarCount);
             Assert.Equal(ParkingBoyConst.NoPositionMessage, response[6].Message);
         }
     }

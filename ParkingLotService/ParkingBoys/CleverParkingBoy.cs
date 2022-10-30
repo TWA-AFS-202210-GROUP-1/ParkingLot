@@ -23,7 +23,7 @@ namespace ParkingLotService.ParkingBoys
 
         private void SortParkingLot()
         {
-            ManagingLots = ManagingLots.OrderByDescending(_ => _.MaxCapacity - _.CarNumber).ToList();
+            ManagingLots = ManagingLots.OrderByDescending(_ => _.MaxCapacity - _.CarCount).ToList();
         }
     }
 }

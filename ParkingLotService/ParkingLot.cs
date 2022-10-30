@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace ParkingLotService
 {
-    public class @string
+    public class ParkingLot
     {
         public int MaxCapacity { get; private set; } = ParkingLotConst.DefaultCapacity;
-        public int CarNumber { get; private set; } = 0;
+        public int CarCount { get; private set; } = 0;
         public List<Car> Cars { get; }
         public string Name { get; }
 
-        public @string(string name)
+        public ParkingLot(string name)
         {
             Name = name;
             Cars = new List<Car>();
@@ -21,7 +21,7 @@ namespace ParkingLotService
             if (IsLotFull())
             {
                 Cars.Add(car);
-                CarNumber++;
+                CarCount++;
                 return true;
             }
 
@@ -46,7 +46,7 @@ namespace ParkingLotService
 
         private bool IsLotFull()
         {
-            return CarNumber < MaxCapacity;
+            return CarCount < MaxCapacity;
         }
     }
 }

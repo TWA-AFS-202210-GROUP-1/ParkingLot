@@ -9,16 +9,16 @@ namespace ParkingLotService.ParkingBoys;
 public class ParkingBoy
 {
     public string Name { get; }
-    protected List<@string> ManagingLots { get; set; }
+    protected List<ParkingLot> ManagingLots { get; set; }
     private readonly string _token;
     public ParkingBoy(string name)
     {
         Name = name;
         _token = Guid.NewGuid().ToString();
-        ManagingLots = new List<@string>();
+        ManagingLots = new List<ParkingLot>();
     }
 
-    public void AssignLot(@string lot)
+    public void AssignLot(ParkingLot lot)
     {
         ManagingLots.Add(lot);
     }
@@ -42,7 +42,7 @@ public class ParkingBoy
         var tickets = new List<Response<Ticket>>();
         foreach (var lot in ManagingLots)
         {
-            while (lot.CarNumber < lot.MaxCapacity && tickets.Count < cars.Count)
+            while (lot.CarCount < lot.MaxCapacity && tickets.Count < cars.Count)
             {
                 if (lot.AddCar(cars[tickets.Count]))
                 {
