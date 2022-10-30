@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ParkingLot
+namespace ParkingLotSystem
 {
     public class TicketNumGenerator
     {

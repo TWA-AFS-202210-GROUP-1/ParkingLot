@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ParkingLot
+namespace ParkingLotSystem
 {
     public class ParkingBoy
     {
         private TicketNumGenerator ticketNumGenerator;
         private List<Ticket> ticketsList;
-        public ParkingBoy()
+        private ParkingLot parkingLot;
+        public ParkingBoy(ParkingLot parkingLot)
         {
+            this.parkingLot = parkingLot;
             this.ticketsList = new List<Ticket>();
         }
 
@@ -16,10 +18,18 @@ namespace ParkingLot
 
         public Ticket HelpParkCar(string carNum)
         {
-            this.ticketNumGenerator = new TicketNumGenerator();
-            Ticket ticket = new Ticket(carNum, ticketNumGenerator);
-            this.TicketsList.Add(ticket);
-            return ticket;
+            if (parkingLot.IsAvailable())
+            {
+                this.ticketNumGenerator = new TicketNumGenerator();
+                Ticket ticket = new Ticket(carNum, ticketNumGenerator);
+                this.TicketsList.Add(ticket);
+                parkingLot.AddCar();
+                return ticket;
+            }
+            else
+            {
+                throw new Exception("Not enough position.");
+            }
         }
 
         public List<Ticket> HelpParkCar(List<string> carsList)
@@ -28,17 +38,25 @@ namespace ParkingLot
             this.ticketNumGenerator = new TicketNumGenerator();
             foreach (string car in carsList)
             {
-                Ticket ticket = new Ticket(car, ticketNumGenerator);
-                this.TicketsList.Add(ticket);
-                tickets.Add(ticket);
+                if (parkingLot.IsAvailable())
+                {
+                    Ticket ticket = new Ticket(car, ticketNumGenerator);
+                    this.TicketsList.Add(ticket);
+                    tickets.Add(ticket);
+                    parkingLot.AddCar();
+                }
+                else
+                {
+                    throw new Exception("Not enough position.");
+                }
             }
 
             return tickets;
         }
 
-        public bool HelpFetchCar()
+        public string HelpFetchCar()
         {
-             return false;
+            throw new Exception("Please provide your parking ticket.");
         }
 
         public string HelpFetchCar(Ticket ticket)
@@ -48,9 +66,13 @@ namespace ParkingLot
             {
                 fetchCarRes = ticket.CarNum;
                 ticketsList.Remove(ticket);
+                parkingLot.RemoveCar();
+                return fetchCarRes;
             }
-
-            return fetchCarRes;
+            else
+            {
+                throw new Exception("Unrecognized parking ticket.");
+            }
         }
     }
 }
