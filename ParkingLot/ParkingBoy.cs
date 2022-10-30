@@ -19,7 +19,15 @@ namespace ParkingLot
         {
             if (hadBeenParkedCarTicketList.Contains(ticket))
             {
-                return new Car(ticket.CarId);
+                if (ticket.HasBeenUsed == false)
+                {
+                    ticket.HasBeenUsed = true;
+                    return new Car(ticket.CarId);
+                }
+                else
+                {
+                    throw new ArgumentException("Ticket has already been used, can't fetch car.");
+                }
             }
             else
             {
@@ -30,6 +38,7 @@ namespace ParkingLot
         public Ticket ParkingCar(Car car, ParkingLotClass parkingLot)
         {
             Ticket hadBeenParkedCarTicket = new Ticket(car.OwnerName, parkingLot.ParkingLotName, parkingBoyName);
+            hadBeenParkedCarTicket.HasBeenUsed = false;
             hadBeenParkedCarTicketList.Add(hadBeenParkedCarTicket);
             return hadBeenParkedCarTicket;
         }

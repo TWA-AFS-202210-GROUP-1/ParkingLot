@@ -1,16 +1,20 @@
-﻿namespace ParkingLot
+﻿using System;
+
+namespace ParkingLot
 {
     public class Ticket
     {
         private string carId;
         private string parkingLotId;
         private string parkingBoyId;
+        private bool hasBeenUsed;
 
         public Ticket(string carId, string parkingLotId, string parkingBoyId)
         {
             this.carId = carId;
             this.parkingLotId = parkingLotId;
             this.parkingBoyId = parkingBoyId;
+            this.hasBeenUsed = true;
         }
 
         public string CarId
@@ -29,6 +33,12 @@
         {
             get { return parkingBoyId; }
             set { parkingBoyId = value; }
+        }
+
+        public bool HasBeenUsed
+        {
+            get { return hasBeenUsed; }
+            set { hasBeenUsed = value; }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ParkingLotTest
             ParkingLotClass parkingLot = new ParkingLotClass(parkingLotName: "Lot1");
             ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
             var exceptedResult = new Ticket(carId: "Tom", parkingLotId: "Lot1", parkingBoyId: "boy1");
+            exceptedResult.HasBeenUsed = false;
 
             //when
             var parkingResult = parkingBoy.ParkingCar(car, parkingLot);
