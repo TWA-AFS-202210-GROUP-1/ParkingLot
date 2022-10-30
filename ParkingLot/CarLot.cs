@@ -8,20 +8,20 @@ namespace ParkingLot
 {
     public class CarLot
     {
-        public string lotId { get; set; }
-        public int capacity { get; set; }
-        public List<Car> CarList { get; set; }
+        public string LotId;
+        public int Capacity;
+        public List<Car> CarList;
 
         public CarLot(string lotId)
         {
-            this.lotId = lotId;
+            this.LotId = lotId;
             this.CarList = new List<Car>();
-            this.capacity = 10;
+            this.Capacity = Constant.Capacity;
         }
 
         public bool AddCar(Car car)
         {
-            if (CarList.Count < capacity)
+            if (CarList.Count < Capacity)
             {
                 CarList.Add(car);
                 return true;
@@ -34,13 +34,10 @@ namespace ParkingLot
 
         public Car DeleteCar(Car car)
         {
-            foreach (var existedCar in CarList)
+            foreach (var existedCar in CarList.Where(existedCar => existedCar.LicensePlate == car.LicensePlate))
             {
-                if (existedCar.LicensePlate == car.LicensePlate)
-                {
-                    CarList.Remove(existedCar);
-                    return existedCar;
-                }
+                CarList.Remove(existedCar);
+                return existedCar;
             }
 
             return null;

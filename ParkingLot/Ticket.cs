@@ -2,14 +2,14 @@
 {
     public class Ticket
     {
-        public string lotId { get; set; }
-        public string LicensePlate { get; set; }
-        public bool Used { get; set; }
+        public string LotId;
+        public string LicensePlate;
+        public bool Used;
 
         public Ticket(string licensePlate, string lotId)
         {
             this.LicensePlate = licensePlate;
-            this.lotId = lotId;
+            this.LotId = lotId;
             this.Used = false;
         }
     }

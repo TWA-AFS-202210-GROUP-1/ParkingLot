@@ -164,7 +164,7 @@ namespace ParkingLotTest
                 new Car("LicensePlate2"),
             };
             parkingBoy.ParkManyCars(carList);
-            var ticket = new Ticket("InvalidLicense", "lotId");
+            var ticket = new Ticket("InvalidLicense", "LotId");
             // when
             var fetchResult = parkingBoy.FetchCar(ticket);
             // then
