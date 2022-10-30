@@ -49,9 +49,6 @@ namespace ParkingLot
       }
     }
 
-    public bool HasCar(Car car)
-    {
-      return ParkedCars.Contains(car);
-    }
+    public bool HasCar(Car car) => ParkedCars.Contains(car);
   }
 }

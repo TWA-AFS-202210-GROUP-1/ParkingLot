@@ -1,28 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static ParkingLot.ChooseParkingLotService;
 
 namespace ParkingLot
 {
   public class ParkingBoy
   {
     private readonly List<ParkingLot> parkingLots;
-    private ParkingLot chosenParkingLot;
+    private readonly ChooseParkingLotDelegate chooseParkingLot;
 
-    public ParkingBoy(List<ParkingLot> parkingLots)
+    public ParkingBoy(List<ParkingLot> parkingLots, ChooseParkingLotDelegate chooseParkingLot)
     {
       this.parkingLots = parkingLots;
-      chosenParkingLot = parkingLots.First();
+      this.chooseParkingLot = chooseParkingLot;
     }
 
     public virtual Response Park(Car car)
     {
-      chosenParkingLot = ChooseParkingLot(parkingLots);
+      var parkingLot = chooseParkingLot(parkingLots);
       var parkingStatus = OperationStatus.NoVacancy;
       Ticket parkingTicket = null;
-      if (chosenParkingLot != null)
+
+      if (parkingLot != null)
       {
-        parkingStatus = chosenParkingLot.AddCar(car);
-        parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car, chosenParkingLot) : null;
+        parkingStatus = parkingLot.AddCar(car);
+        parkingTicket = parkingStatus == OperationStatus.ParkingSuccessful ? new Ticket(car, parkingLot) : null;
       }
 
       return new Response(car, parkingTicket, parkingStatus);
@@ -32,9 +34,10 @@ namespace ParkingLot
     {
       var tickets = new List<Ticket>();
       OperationStatus parkingStatus = OperationStatus.ParkingFailed;
+
       foreach (var car in cars)
       {
-        var parkingLot = ChooseParkingLot(parkingLots);
+        var parkingLot = chooseParkingLot(parkingLots);
         if (parkingLot != null)
         {
           parkingStatus = parkingLot.AddCar(car);
@@ -52,12 +55,14 @@ namespace ParkingLot
       }
 
       var parkedCars = cars.Take(tickets.Count).ToList();
+
       return new Response(parkedCars, tickets, parkingStatus);
     }
 
     public Response FetchCar(Ticket ticket)
     {
       var response = new Response(null, ticket, OperationStatus.RemovingFailed);
+
       foreach (var parkingLot in parkingLots)
       {
         var fetchedCar = ticket != null && parkingLot.HasCar(ticket.Car) ? ticket.Car : null;
@@ -70,13 +75,6 @@ namespace ParkingLot
       }
 
       return response;
-    }
-
-    private static ParkingLot ChooseParkingLot(List<ParkingLot> parkingLots)
-    {
-      var chosenParkingLot = parkingLots.Where(parkingLot => parkingLot.EmptySlots > 0).ToList();
-
-      return chosenParkingLot.Any() ? chosenParkingLot.First() : null;
     }
   }
 }

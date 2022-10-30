@@ -31,25 +31,13 @@ namespace ParkingLot
       isValidTicket = ticket != null && car != null;
     }
 
-    public Car ShowCar()
-    {
-      return car;
-    }
+    public Car ShowCar() => car;
 
-    public List<Car> ShowCars()
-    {
-      return cars;
-    }
+    public List<Car> ShowCars() => cars;
 
-    public Ticket ShowTicket()
-    {
-      return ticket;
-    }
+    public Ticket ShowTicket() => ticket;
 
-    public List<Ticket> ShowTickets()
-    {
-      return tickets;
-    }
+    public List<Ticket> ShowTickets() => tickets;
 
     public string ShowErrorMessage()
     {
