@@ -23,16 +23,16 @@ namespace ParkingLotTest
         }
 
         [Fact]
-        public void Should_return_bool_when_fetch_car_given_ticket()
+        public void Should_return_carNum_when_fetch_car_given_ticket()
         {
             //given
             ParkingBoy parkingBoy = new ParkingBoy();
             Customer customer = new Customer("1234");
             Ticket ticket = customer.ParkCar(customer.CarNum, parkingBoy);
             //when
-            var res = customer.FetchCar(ticket, parkingBoy);
+            string carNum = customer.FetchCar(ticket, parkingBoy);
             //then
-            Assert.True(res);
+            Assert.Equal("1234", carNum);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace ParkingLotTest
         }
 
         [Fact]
-        public void Should_not_return_tickets_when_fetching_cars_given_wrong_ticket_or_no_ticket()
+        public void Should_return_empty_string_when_fetching_cars_given_wrong_ticket_or_no_ticket()
         {
             //given
             ParkingBoy parkingBoy = new ParkingBoy();
@@ -61,13 +61,13 @@ namespace ParkingLotTest
             //then
             Assert.False(resOfNoTicket);
             //when
-            bool resOfWrongTicket = parkingBoy.HelpFetchCar(new Ticket
+            string resOfWrongTicket = parkingBoy.HelpFetchCar(new Ticket
             {
                 CarNum = "111",
-                TicketNum = "111"
+                TicketNum = "111",
             });
             //then
-            Assert.False(resOfWrongTicket);
+            Assert.Equal(string.Empty, resOfWrongTicket);
             Assert.Equal(2, parkingBoy.TicketsList.Count);
         }
     }

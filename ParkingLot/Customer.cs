@@ -18,7 +18,7 @@ namespace ParkingLot
             return parkingBoy.HelpParkCar(carNum);
         }
 
-        public bool FetchCar(Ticket ticket, ParkingBoy parkingBoy)
+        public string FetchCar(Ticket ticket, ParkingBoy parkingBoy)
         {
             return parkingBoy.HelpFetchCar(ticket);
         }
