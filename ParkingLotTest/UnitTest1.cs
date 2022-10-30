@@ -96,5 +96,47 @@ namespace ParkingLotTest
 
             Assert.Null(ticket);
         }
+
+        [Fact]
+        public void Should_get_Unrecognized_parking_ticket_when_ticket_if_wrong()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            Car car = new Car();
+
+            parkingboy.Checkin(car);
+
+            Ticket ticket = new Ticket();
+
+            Car car_get = parkingboy.Checkout(ticket);
+
+            Assert.Equal("Unrecognized parking ticket.", parkingboy.Personalizedmessage);
+        }
+
+        [Fact]
+        public void Should_get_Please_provide_your_parking_ticket_when_ticket_if_no()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            Car car = new Car();
+
+            parkingboy.Checkin(car);
+
+            parkingboy.Checkout();
+
+            Assert.Equal("Please provide your parking ticket.", parkingboy.Personalizedmessage);
+        }
+
+        [Fact]
+        public void Should_get_Not_enough_position_when_parkinglot_if_full()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 0);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            Car car = new Car();
+
+            parkingboy.Checkin(car);
+
+            Assert.Equal("Not enough position.", parkingboy.Personalizedmessage);
+        }
     }
 }

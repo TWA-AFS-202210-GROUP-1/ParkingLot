@@ -7,9 +7,12 @@
     public class ParkingBoy
     {
         private Parkinglot myparkinglot;
+        private List<string> messages;
+        private string personalizedmessage;
         public ParkingBoy(Parkinglot myparkinglot)
         {
             this.myparkinglot = myparkinglot;
+            this.messages = new List<string>(new string[] { "Unrecognized parking ticket.", "Please provide your parking ticket.", "Not enough position.", "All good Dude." });
         }
 
         public Parkinglot Myparkinglot
@@ -22,6 +25,14 @@
             set
             {
                myparkinglot = value;
+            }
+        }
+
+        public string Personalizedmessage
+        {
+            get
+            {
+                return personalizedmessage;
             }
         }
 
@@ -38,6 +49,7 @@
                     {
                         myparkinglot.Parkingspace[i] = ticket.Number;
                         car.Parking(ticket, 1);
+                        this.personalizedmessage = this.messages[3];
                         break;
                     }
                 }
@@ -46,6 +58,7 @@
             {
                 Ticket ticket = new Ticket(car: car, number: myparkinglot.Ticketnumber);
                 ticket.Status = -1;
+                this.personalizedmessage = this.messages[2];
             }
         }
 
@@ -68,11 +81,18 @@
                     Car car = ticket.Correspondingcar;
                     car.Parkingstatus = 0;
                     ticket.Status = 0;
+                    this.personalizedmessage = this.messages[3];
                     return car;
                 }
             }
 
+            this.personalizedmessage = this.messages[0];
             return new Car();
+        }
+
+        public void Checkout()
+        {
+            this.personalizedmessage = this.messages[1];
         }
     }
 }
