@@ -271,7 +271,7 @@ namespace ParkingLotTest
     }
 
     [Fact]
-    public void Should_return_tickets_of_same_parking_lot_when_park_given_2_cars_and_2_default_parking_lots()
+    public void Should_return_tickets_of_same_parking_lot_when_park_given_1_and_3_cars_and_2_default_parking_lots()
     {
       // given
       var parkingLots = new List<ParkingLot>
@@ -280,12 +280,43 @@ namespace ParkingLotTest
         new ParkingLot(),
       };
       var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Black Jeep"),
+        new Car("White SUV"),
+        new Car("Red Mustang"),
+      };
       // when
       var blueSedanTicket = parkingBoy.Park(new Car("Blue Sedan")).ShowTicket();
-      var blackJeepTicket = parkingBoy.Park(new Car("Black Jeep")).ShowTicket();
+      var tickets = parkingBoy.Park(cars).ShowTickets();
+      tickets.Add(blueSedanTicket);
       // then
-      Assert.Equal(parkingLots[0].Id, blueSedanTicket.ParkingLot.Id);
-      Assert.Equal(parkingLots[0].Id, blackJeepTicket.ParkingLot.Id);
+      foreach (var ticket in tickets)
+      {
+        Assert.Equal(parkingLots[0].Id, ticket.ParkingLot.Id);
+      }
+    }
+
+    [Fact]
+    public void Should_return_ticket_of_second_parking_lot_when_park_given_filled_first_parking_lot()
+    {
+      // given
+      var parkingLots = new List<ParkingLot>
+      {
+        new ParkingLot(2),
+        new ParkingLot(2),
+      };
+      var parkingBoy = new ParkingBoy(parkingLots);
+      var cars = new List<Car>
+      {
+        new Car("Blue Sedan"),
+        new Car("Black Jeep"),
+      };
+      parkingBoy.Park(cars);
+      // when
+      var ticket = parkingBoy.Park(new Car("White SUV")).ShowTicket();
+      // then
+      Assert.Equal(parkingLots[1].Id, ticket.ParkingLot.Id);
     }
   }
 }
