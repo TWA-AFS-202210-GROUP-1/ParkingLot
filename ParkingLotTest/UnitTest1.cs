@@ -42,5 +42,21 @@ namespace ParkingLotTest
 
             Assert.Equal(cars[0], car_get);
         }
+
+        [Fact]
+        public void Should_get_no_car_when_ticket_wrong_if_given_a_wrong_ticket()
+        {
+            Parkinglot parkinglot = new Parkinglot(name: "myp", capacity: 10);
+            ParkingBoy parkingboy = new ParkingBoy(myparkinglot: parkinglot);
+            Car car = new Car();
+
+            parkingboy.Checkin(car);
+
+            Ticket ticket = new Ticket();
+
+            Car car_get = parkingboy.Checkout(ticket);
+
+            Assert.NotEqual(car, car_get);
+        }
     }
 }

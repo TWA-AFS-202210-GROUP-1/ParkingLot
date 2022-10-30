@@ -13,6 +13,12 @@
             this.status = 1;
         }
 
+        public Ticket()
+        {
+            this.status = -1;
+            this.number = -1;
+        }
+
         public Car Correspondingcar
         {
             get
