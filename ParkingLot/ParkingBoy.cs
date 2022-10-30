@@ -28,6 +28,11 @@ namespace ParkingLot
             }
         }
 
+        public Car FetchingCar()
+        {
+            throw new ArgumentException("Please provide your parking ticket.");
+        }
+
         public Ticket ParkingCar(Car car, ParkingLotClass parkingLot)
         {
             // need extract a method here about if else

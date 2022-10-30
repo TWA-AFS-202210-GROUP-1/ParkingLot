@@ -57,5 +57,20 @@
             var ex = Assert.Throws<ArgumentException>(() => parkingBoy.FetchingCar(ticket));
             Assert.Equal("Unrecognized parking ticket.", ex.Message);
         }
+
+        [Fact]
+        public void Should_throw_exception_When_fetching_car_Given_no_ticket()
+        {
+            //given
+            Car car = new Car(ownerName: "Tom");
+            ParkingLotClass parkingLot = new ParkingLotClass(parkingLotName: "Lot1");
+            ParkingBoy parkingBoy = new ParkingBoy(parkingBoyName: "boy1");
+            var ticket = parkingBoy.ParkingCar(car, parkingLot);
+
+            //when
+            //then
+            var ex = Assert.Throws<ArgumentException>(() => parkingBoy.FetchingCar());
+            Assert.Equal("Please provide your parking ticket.", ex.Message);
+        }
     }
 }
