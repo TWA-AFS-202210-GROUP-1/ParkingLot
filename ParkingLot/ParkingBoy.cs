@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ParkingLot
 {
@@ -13,12 +14,17 @@ namespace ParkingLot
 
         public List<Ticket> TicketsList { get => ticketsList; set => ticketsList = value; }
 
-        public Ticket ParkCar(string carNum, TicketNumGenerator ticketNumGenerator)
+        public Ticket HelpParkCar(string carNum)
         {
-            this.ticketNumGenerator = ticketNumGenerator;
+            this.ticketNumGenerator = new TicketNumGenerator();
             Ticket ticket = new Ticket(carNum, ticketNumGenerator);
             this.TicketsList.Add(ticket);
             return ticket;
+        }
+
+        public bool HelpFetchCar(Ticket ticket)
+        {
+            return ticketsList.Contains(ticket);
         }
     }
 }
