@@ -1,0 +1,242 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Compression;
+
+namespace ParkingLotTest
+{
+    using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+    using ParkingLot;
+    using System.Net.Sockets;
+    using System.Runtime.ConstrainedExecution;
+    using System.Runtime.InteropServices;
+    using System.Security.Cryptography;
+    using System.Text.RegularExpressions;
+    using Xunit;
+
+    public class ParkingBoyTest
+    {
+        [Fact]
+        public void Should_return_ticket_when_parking_boy_park_a_car_given_a_car()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var car = new Car("ThisIsLicensePlate");
+            // when
+            var parkResult = parkingBoy.ParkCar(car);
+            // then
+            Assert.NotNull(parkResult.subject);
+        }
+
+        [Fact]
+        public void Should_return_a_car_when_parking_boy_fetch_a_car_given_a_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var car = new Car("ThisIsLicensePlate");
+            var parkResult = parkingBoy.ParkCar(car);
+            // when
+            var fetchResult = parkingBoy.FetchCar(parkResult.subject);
+            // then
+            Assert.Equal(car, fetchResult.subject);
+        }
+
+        [Fact]
+        public void Should_return_tickets_when_parking_boy_park_cars_given_cars()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            // when
+            var ticketList = parkingBoy.ParkManyCars(carList);
+            // then
+            Assert.Equal("LicensePlate1", ticketList[0].LicensePlate);
+            Assert.Equal("LicensePlate2", ticketList[1].LicensePlate);
+            Assert.Equal(2, ticketList.Count);
+        }
+
+        [Fact]
+        public void Should_return_cars_when_parking_boy_fetch_cars_given_tickets()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            var ticketList = parkingBoy.ParkManyCars(carList);
+            // when
+            var fetchedCars = parkingBoy.FetchManyCars(ticketList);
+            // then
+            Assert.Equal(carList, fetchedCars);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_wrong_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var ticket = new Ticket("InvalidLicensePlate", "Invalid");
+            parkingBoy.ParkCar(new Car("LicensePlate"));
+            // when
+            var fetchResult = parkingBoy.FetchCar(ticket);
+            // then
+            Assert.Null(fetchResult.subject);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_null_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            parkingBoy.ParkCar(new Car("LicensePlate"));
+            // when
+            var fetchResult = parkingBoy.FetchCar(null);
+            // then
+            Assert.Null(fetchResult.subject);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_boy_fetch_given_a_used_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var parkResult = parkingBoy.ParkCar(new Car("LicensePlate"));
+            parkingBoy.FetchCar(parkResult.subject);
+            // when
+            var fetchResult = parkingBoy.FetchCar(parkResult.subject);
+            // then
+            Assert.Null(fetchResult.subject);
+            Assert.True(parkResult.subject.Used);
+        }
+
+        [Fact]
+        public void Should_return_null_when_parking_lot_is_full_given_a_car()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>();
+            for (int num = 0; num < 20; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var parkResult = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Null(parkResult.subject);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_boy_fetch_given_a_wrong_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            parkingBoy.ParkManyCars(carList);
+            var ticket = new Ticket("InvalidLicense", "LotId");
+            // when
+            var fetchResult = parkingBoy.FetchCar(ticket);
+            // then
+            Assert.Equal("Unrecognized parking ticket.", fetchResult.message);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_boy_fetch_given_null_ticket()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>()
+            {
+                new Car("LicensePlate1"),
+                new Car("LicensePlate2"),
+            };
+            parkingBoy.ParkManyCars(carList);
+
+            // when
+            var fetchResult = parkingBoy.FetchCar(null);
+            // then
+            Assert.Equal("Please provide your parking ticket.", fetchResult.message);
+        }
+
+        [Fact]
+        public void Should_return_error_message_when_parking_lot_is_full_given_a_car()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            parkingBoy.ManageParkingLots(new CarLot("first parking lot"));
+            parkingBoy.ManageParkingLots(new CarLot("second parking lot"));
+            var carList = new List<Car>();
+            for (int num = 0; num < 20; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var parkResult = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Equal("Not enough position.", parkResult.message);
+        }
+
+        [Fact]
+        public void Should_return_tickets_of_second_parking_lot_when_first_parking_lot_is_full_given_cars()
+        {
+            // given
+            var parkingBoy = new ParkingBoy();
+            var parkingLot1 = new CarLot("first parking lot");
+            var parkingLot2 = new CarLot("Second parking lot");
+            parkingBoy.ManageParkingLots(parkingLot1);
+            parkingBoy.ManageParkingLots(parkingLot2);
+
+            var carList = new List<Car>();
+            for (int num = 0; num < 10; num++)
+            {
+                carList.Add(new Car($"LicensePlate{num}"));
+            }
+
+            parkingBoy.ParkManyCars(carList);
+
+            var extraCar = new Car("LicensePlateExtra");
+
+            // when
+            var parkResult = parkingBoy.ParkCar(extraCar);
+            // then
+            Assert.Equal("LicensePlateExtra", parkResult.subject.LicensePlate);
+        }
+    }
+}
