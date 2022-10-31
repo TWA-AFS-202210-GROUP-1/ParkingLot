@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Microsoft Managed Recommended Rules" Description="These rules focus on the most critical problems in your code, including potential security holes, application crashes, and other important logic and design errors. It is recommended to include this rule set in any custom rule set you create for your projects." ToolsVersion="10.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Microsoft Managed Recommended Rules" Description="These rules focus on the most critical problems in your code, including potential security holes, application crashes, and other important logic and design errors. It is recommended to include this rule set in any custom rule set you create for your projects." ToolsVersion="17.0">
   <Localization ResourceAssembly="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.dll" ResourceBaseName="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.Localized">
     <Name Resource="MinimumRecommendedRules_Name" />
     <Description Resource="MinimumRecommendedRules_Description" />
   </Localization>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
+    <Rule Id="CS1573" Action="Hidden" />
+    <Rule Id="CS1591" Action="Hidden" />
+    <Rule Id="CS1712" Action="Hidden" />
+  </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA1000" Action="Error" />
     <Rule Id="SA1001" Action="Error" />
@@ -39,7 +44,6 @@
     <Rule Id="SA1201" Action="Error" />
     <Rule Id="SA1202" Action="Error" />
     <Rule Id="SA1203" Action="Error" />
-    <Rule Id="SA1204" Action="Warning" />
     <Rule Id="SA1208" Action="None" />
     <Rule Id="SA1209" Action="Error" />
     <Rule Id="SA1210" Action="None" />
@@ -67,8 +71,8 @@
     <Rule Id="SA1505" Action="Error" />
     <Rule Id="SA1507" Action="Error" />
     <Rule Id="SA1508" Action="Error" />
-    <Rule Id="SA1513" Action="Error" />
     <Rule Id="SA1512" Action="None" />
+    <Rule Id="SA1513" Action="Error" />
     <Rule Id="SA1515" Action="None" />
     <Rule Id="SA1516" Action="None" />
     <Rule Id="SA1517" Action="Error" />
