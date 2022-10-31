@@ -6,17 +6,18 @@ namespace ParkingLotServiceTest
     public class ParkingLotTest
     {
         [Fact]
-        public void Should_return_true_when_add_car_successfully_when_given_car()
+        public void Should_car_count_should_be_1_when_add_car_successfully_when_given_car()
         {
             //given
             var parkingLot = new ParkingLot("Parking Lot 01");
             var car = new Car("License Number");
 
             //when
-            var result = parkingLot.AddCar(car);
+            parkingLot.AddCar(car);
+            var result = parkingLot.CarCount;
 
             //then
-            Assert.True(result);
+            Assert.Equal(1, result);
         }
 
         [Fact]
@@ -51,7 +52,7 @@ namespace ParkingLotServiceTest
         }
 
         [Fact]
-        public void Should_return_false_when_add_car_given_a_full_parking_lot()
+        public void Should_return_false_when_get_is_full_given_a_full_parking_lot()
         {
             //given
             var parkingLot = new ParkingLot("Parking Lot 01");
@@ -62,7 +63,7 @@ namespace ParkingLotServiceTest
             }
 
             //when
-            var result = parkingLot.AddCar(car);
+            var result = parkingLot.IsNotFull;
 
             //then
             Assert.False(result);

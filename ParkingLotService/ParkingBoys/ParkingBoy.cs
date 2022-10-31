@@ -25,13 +25,12 @@ public class ParkingBoy : IParkingBoy
 
     public virtual Response<Ticket> ParkCar(Car car)
     {
-        foreach (var lot in ManagingLots)
+        var lot = ManagingLots.Find(_ => _.IsNotFull);
+        if (lot != null)
         {
-            if (lot.AddCar(car))
-            {
-                var ticket = SignTicket(new Ticket(car.LicenseNumber, lot.Name));
-                return new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage);
-            }
+            lot.AddCar(car);
+            var ticket = SignTicket(new Ticket(car.LicenseNumber, lot.Name));
+            return new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage);
         }
 
         return new Response<Ticket>(null, ParkingBoyConst.NoPositionMessage);
@@ -44,8 +43,9 @@ public class ParkingBoy : IParkingBoy
         {
             while (lot.CarCount < lot.MaxCapacity && tickets.Count < cars.Count)
             {
-                if (lot.AddCar(cars[tickets.Count]))
+                if (lot.IsNotFull)
                 {
+                    lot.AddCar(cars[tickets.Count]);
                     var ticket = SignTicket(new Ticket(cars[tickets.Count].LicenseNumber, lot.Name));
                     tickets.Add(new Response<Ticket>(ticket, ParkingBoyConst.GenerateTicketMessage));
                 }

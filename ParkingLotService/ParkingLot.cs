@@ -6,9 +6,12 @@ namespace ParkingLotService
     public class ParkingLot
     {
         public int MaxCapacity { get; private set; } = ParkingLotConst.DefaultCapacity;
-        public int CarCount { get; private set; } = 0;
+
+        public int CarCount => Cars.Count;
+
         public List<Car> Cars { get; }
         public string Name { get; }
+        public bool IsNotFull => CarCount < MaxCapacity;
 
         public ParkingLot(string name)
         {
@@ -16,16 +19,9 @@ namespace ParkingLotService
             Cars = new List<Car>();
         }
 
-        public bool AddCar(Car car)
+        public void AddCar(Car car)
         {
-            if (IsLotFull())
-            {
-                Cars.Add(car);
-                CarCount++;
-                return true;
-            }
-
-            return false;
+            Cars.Add(car);
         }
 
         public Car PopCar(string licenseNumber)
@@ -39,14 +35,9 @@ namespace ParkingLotService
             return car;
         }
 
-        public void SeMaxCapacity(int max)
+        public void SetMaxCapacity(int max)
         {
             MaxCapacity = max;
-        }
-
-        private bool IsLotFull()
-        {
-            return CarCount < MaxCapacity;
         }
     }
 }
