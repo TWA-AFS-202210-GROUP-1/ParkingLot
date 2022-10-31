@@ -3,7 +3,7 @@
 ################################################################################
 
 .vs
-/ParkingLot/bin
-/ParkingLot/obj
-/ParkingLotTest/bin
-/ParkingLotTest/obj
+/ParkingLotService/bin
+/ParkingLotService/obj
+/ParkingLotServiceTest/bin
+/ParkingLotServiceTest/obj

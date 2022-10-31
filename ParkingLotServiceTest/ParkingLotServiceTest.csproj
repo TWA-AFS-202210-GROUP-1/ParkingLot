@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>ParkingLotTest</RootNamespace>
+    <RootNamespace>ParkingLotServiceTest</RootNamespace>
     <CodeAnalysisRuleSet>StyleCop.ruleset</CodeAnalysisRuleSet>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ParkingLot\ParkingLot.csproj" />
+    <ProjectReference Include="..\ParkingLotService\ParkingLotService.csproj" />
   </ItemGroup>
 
 </Project>
