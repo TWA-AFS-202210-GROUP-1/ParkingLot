@@ -1,39 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ParkingLotSystem
 {
     public class ParkingLot
     {
-        private string lotNum;
         private int capacity;
-        private int availabeSpotNum;
-        public ParkingLot()
+        private string lotId;
+        private List<Car> cars;
+        public ParkingLot(string lotId)
         {
-            this.lotNum = Guid.NewGuid().ToString();
-            this.capacity = 10;
-            this.availabeSpotNum = 10;
+            this.Capacity = 10;
+            this.LotId = lotId;
+            this.Cars = new List<Car>();
         }
 
-        public ParkingLot(int capacity)
+        public ParkingLot(int capacity, string lotId)
         {
-            this.lotNum = Guid.NewGuid().ToString();
-            this.capacity = capacity;
-            this.availabeSpotNum = capacity;
+            this.Capacity = capacity;
+            this.LotId = lotId;
+            this.Cars = new List<Car>();
         }
 
-        public void AddCar()
+        public string LotId { get => lotId; set => lotId = value; }
+        public List<Car> Cars { get => cars; set => cars = value; }
+        public int Capacity { get => capacity; set => capacity = value; }
+
+        public void AddCar(Car car)
         {
-            this.availabeSpotNum--;
+            this.Cars.Add(car);
         }
 
         public bool IsAvailable()
         {
-            return this.availabeSpotNum > 0;
+            return this.Capacity - cars.Count > 0;
         }
 
-        public void RemoveCar()
+        public void RemoveCar(Car car)
         {
-            this.availabeSpotNum++;
+           this.Cars.Remove(car);
         }
     }
 }

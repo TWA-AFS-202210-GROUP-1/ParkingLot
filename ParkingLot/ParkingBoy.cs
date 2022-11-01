@@ -1,78 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ParkingLotSystem
 {
     public class ParkingBoy
     {
-        private TicketNumGenerator ticketNumGenerator;
-        private List<Ticket> ticketsList;
-        private ParkingLot parkingLot;
-        public ParkingBoy(ParkingLot parkingLot)
+        private List<ParkingLot> parkingLots;
+        public ParkingBoy()
         {
-            this.parkingLot = parkingLot;
-            this.ticketsList = new List<Ticket>();
+            this.parkingLots = new List<ParkingLot>();
         }
 
-        public List<Ticket> TicketsList { get => ticketsList; set => ticketsList = value; }
-
-        public Ticket HelpParkCar(string carNum)
+        public ParkResponse<Ticket> HelpParkCar(Car car)
         {
-            if (parkingLot.IsAvailable())
-            {
-                this.ticketNumGenerator = new TicketNumGenerator();
-                Ticket ticket = new Ticket(carNum, ticketNumGenerator);
-                this.TicketsList.Add(ticket);
-                parkingLot.AddCar();
-                return ticket;
-            }
-            else
-            {
-                throw new Exception("Not enough position.");
-            }
-        }
-
-        public List<Ticket> HelpParkCar(List<string> carsList)
-        {
-            List<Ticket> tickets = new List<Ticket>();
-            this.ticketNumGenerator = new TicketNumGenerator();
-            foreach (string car in carsList)
+            foreach (ParkingLot parkingLot in parkingLots)
             {
                 if (parkingLot.IsAvailable())
                 {
-                    Ticket ticket = new Ticket(car, ticketNumGenerator);
-                    this.TicketsList.Add(ticket);
-                    tickets.Add(ticket);
-                    parkingLot.AddCar();
+                    Ticket ticket = new Ticket(car.CarNum, parkingLot.LotId);
+                    parkingLot.AddCar(car);
+                    return new ParkResponse<Ticket>(ticket, "Enough position.");
                 }
-                else
+            }
+
+            return new ParkResponse<Ticket>(null, "Not enough position.");
+        }
+
+        public List<ParkResponse<Ticket>> HelpParkCar(List<Car> carsList)
+        {
+           return carsList.Select(carsList => HelpParkCar(carsList)).ToList();
+        }
+
+        public FetchCarResponse<Car> HelpFetchCar()
+        {
+            return new FetchCarResponse<Car>(null, "Please provide your parking ticket.");
+        }
+
+        public FetchCarResponse<Car> HelpFetchCar(Ticket ticket)
+        {
+            ParkingLot targetParkingLot = parkingLots.Find(i => i.LotId == ticket.LotId);
+            if (targetParkingLot != null)
+            {
+                Car targetCar = targetParkingLot.Cars.Find(i => i.CarNum == ticket.CarNum);
+                if (targetCar != null)
                 {
-                    throw new Exception("Not enough position.");
+                    targetParkingLot.RemoveCar(targetCar);
+                    return new FetchCarResponse<Car>(targetCar, "Fetch car successfully");
                 }
             }
 
-            return tickets;
+            return new FetchCarResponse<Car>(null, "Unrecognized parking ticket.");
         }
 
-        public string HelpFetchCar()
+        public void AssignParkingLot(ParkingLot parkingLot)
         {
-            throw new Exception("Please provide your parking ticket.");
-        }
-
-        public string HelpFetchCar(Ticket ticket)
-        {
-            string fetchCarRes = string.Empty;
-            if (ticketsList.Contains(ticket))
-            {
-                fetchCarRes = ticket.CarNum;
-                ticketsList.Remove(ticket);
-                parkingLot.RemoveCar();
-                return fetchCarRes;
-            }
-            else
-            {
-                throw new Exception("Unrecognized parking ticket.");
-            }
+            this.parkingLots.Add(parkingLot);
         }
     }
 }

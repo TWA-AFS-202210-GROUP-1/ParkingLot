@@ -13,39 +13,42 @@ namespace ParkingLotSystemTest
         public void Should_return_ticket_when_parked_into_parking_lot_given_customer_and_parking_boy()
         {
             //given
-            ParkingLot parkingLot = new ParkingLot();
-            ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-            Customer customer = new Customer("1234");
+            ParkingLot parkingLot = new ParkingLot("1");
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.AssignParkingLot(parkingLot);
+            Car car = new Car("1234");
             //when
-            Ticket ticket = customer.ParkCar(customer.CarNum, parkingBoy);
+            Ticket ticket = parkingBoy.HelpParkCar(car).Ticket;
             //then
             Assert.Equal("1234", ticket.CarNum);
-            Assert.Equal("1234", parkingBoy.TicketsList[0].CarNum);
+            Assert.Equal(1, parkingLot.Cars.Count);
         }
 
         [Fact]
         public void Should_return_carNum_when_fetch_car_given_ticket()
         {
             //given
-            ParkingLot parkingLot = new ParkingLot();
-            ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-            Customer customer = new Customer("1234");
-            Ticket ticket = customer.ParkCar(customer.CarNum, parkingBoy);
+            ParkingLot parkingLot = new ParkingLot("1");
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.AssignParkingLot(parkingLot);
+            Car car = new Car("1234");
+            Ticket ticket = parkingBoy.HelpParkCar(car).Ticket;
             //when
-            string carNum = customer.FetchCar(ticket, parkingBoy);
+            Car fetchedcar = parkingBoy.HelpFetchCar(ticket).Car;
             //then
-            Assert.Equal("1234", carNum);
+            Assert.Equal("1234", fetchedcar.CarNum);
         }
 
         [Fact]
         public void Should_return_tickets_when_parking_cars_given_cars()
         {
             //given
-            ParkingLot parkingLot = new ParkingLot();
-            ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-            List<string> carsNums = new List<string>() { "11", "12", "13" };
+            ParkingLot parkingLot = new ParkingLot("1");
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.AssignParkingLot(parkingLot);
+            List<Car> cars = new List<Car>() { new Car(carNum: "11"), new Car(carNum: "12"), new Car(carNum: "13") };
             //when
-            List<Ticket> tickets = parkingBoy.HelpParkCar(carsNums);
+            List<Ticket> tickets = parkingBoy.HelpParkCar(cars).Select(repsonse => repsonse.Ticket).ToList();
             //then
             Assert.Equal(3, tickets.Count);
             Assert.Equal("11", tickets[0].CarNum);
@@ -57,38 +60,40 @@ namespace ParkingLotSystemTest
         public void Should_throw_err_msg_when_fetching_cars_given_wrong_ticket_or_no_ticket()
         {
             //given
-            ParkingLot parkingLot = new ParkingLot();
-            ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-            parkingBoy.TicketsList = new List<Ticket>() { new Ticket { CarNum = "1234", TicketNum = "1234" }, new Ticket { CarNum = "1233", TicketNum = "1233" } };
+            ParkingLot parkingLot = new ParkingLot("1");
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.AssignParkingLot(parkingLot);
+            Car car = new Car("1234");
+            _ = parkingBoy.HelpParkCar(car);
             //when
-            Action notGivenTicket = () => parkingBoy.HelpFetchCar();
+            string msg = parkingBoy.HelpFetchCar().FetchMsg;
             //then
-            var noTicketError = Assert.Throws<Exception>(notGivenTicket);
-            Assert.Equal("Please provide your parking ticket.", noTicketError.Message);
+            Assert.Equal("Please provide your parking ticket.", msg);
             //when
-            Action givenWrongTicket = () => parkingBoy.HelpFetchCar(new Ticket
+            string res = parkingBoy.HelpFetchCar(new Ticket
             {
                 CarNum = "111",
-                TicketNum = "111",
-            });
+                LotId = "3",
+            }).FetchMsg;
             //then
-            var wrongTicketError = Assert.Throws<Exception>(givenWrongTicket);
-            Assert.Equal("Unrecognized parking ticket.", wrongTicketError.Message);
-            Assert.Equal(2, parkingBoy.TicketsList.Count);
+            Assert.Equal("Unrecognized parking ticket.", res);
+            Assert.Equal(1, parkingLot.Cars.Count);
         }
 
         [Fact]
         public void Should_throw_no_space_err_msg_when_parking_cars_given_not_enough_parking_spots()
         {
             //given
-            ParkingLot parkingLot = new ParkingLot(1);
-            ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+            ParkingLot parkingLot = new ParkingLot(1, "1");
+            ParkingBoy parkingBoy = new ParkingBoy();
+            parkingBoy.AssignParkingLot(parkingLot);
+            Car car = new Car("1234");
+            _ = parkingBoy.HelpParkCar(car);
             //when
-            parkingBoy.HelpParkCar("1234");
-            Action parkToLotWithNoSpace = () => parkingBoy.HelpParkCar("1233");
+            Car newCar = new Car("1233");
+            string msg = parkingBoy.HelpParkCar(newCar).ParkMsg;
             //then
-            var noSpaceError = Assert.Throws<Exception>(parkToLotWithNoSpace);
-            Assert.Equal("Not enough position.", noSpaceError.Message);
+            Assert.Equal("Not enough position.", msg);
         }
     }
 }

@@ -5,19 +5,19 @@ namespace ParkingLotSystem
     public class Ticket
     {
         private string carNum;
-        private string ticketNum;
+        private string lotId;
 
         public Ticket()
         {
         }
 
-        public Ticket(string carNum, TicketNumGenerator ticketNumGenerator)
+        public Ticket(string carNum, string lotId)
         {
             this.CarNum = carNum;
-            this.TicketNum = ticketNumGenerator.GenerateTicketNum();
+            this.LotId = lotId;
         }
 
         public string CarNum { get => carNum; set => carNum = value; }
-        public string TicketNum { get => ticketNum; set => ticketNum = value; }
+        public string LotId { get => lotId; set => lotId = value; }
     }
 }
